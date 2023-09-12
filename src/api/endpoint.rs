@@ -42,17 +42,17 @@ where
         let mut url = client.rest_endpoint(&self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
-        let req = Request::builder()
+        let request_builder = Request::builder()
             .method(self.method())
             .uri(url_to_http_uri(url));
 
-        let (req, data) = if let Some((mime, data)) = self.body() {
-            (req.header(header::CONTENT_TYPE, mime), data)
+        let (request_builder, data) = if let Some((mime, data)) = self.body() {
+            (request_builder.header(header::CONTENT_TYPE, mime), data)
         } else {
-            (req, Vec::new())
+            (request_builder, Vec::new())
         };
 
-        let rsp = client.rest(req, data)?;
+        let rsp = client.rest(request_builder, data)?;
         let status = rsp.status();
 
         let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {
@@ -88,17 +88,17 @@ where
         let mut url = client.rest_endpoint(&self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
-        let req = Request::builder()
+        let request_builder = Request::builder()
             .method(self.method())
             .uri(url_to_http_uri(url));
 
-        let (req, data) = if let Some((mime, data)) = self.body() {
-            (req.header(header::CONTENT_TYPE, mime), data)
+        let (request_builder, data) = if let Some((mime, data)) = self.body() {
+            (request_builder.header(header::CONTENT_TYPE, mime), data)
         } else {
-            (req, Vec::new())
+            (request_builder, Vec::new())
         };
 
-        let rsp = client.rest_async(req, data).await?;
+        let rsp = client.rest_async(request_builder, data).await?;
         let status = rsp.status();
 
         let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {

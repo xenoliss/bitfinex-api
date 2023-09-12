@@ -12,3 +12,10 @@ impl<'a> Symbols<'a> {
         }
     }
 }
+
+#[derive(Debug, Clone, Copy)]
+#[repr(i8)]
+pub enum Sort {
+    Desc = -1,
+    Asc = 1,
+}

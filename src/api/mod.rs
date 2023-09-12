@@ -7,6 +7,7 @@ pub mod query;
 
 pub mod book;
 pub mod platform_status;
+pub mod stats;
 pub mod ticker;
 pub mod tickers;
 pub mod tickers_history;

@@ -8,6 +8,7 @@ use bitfinex_rs::{
         common::Symbols,
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
+        stats::{HistStatsResp, KeyArgs, LastStatsResp, Section, Side, Stats},
         ticker::{Ticker, TickerResp},
         tickers::{Tickers, TickersResp},
         tickers_history::{TickersHistory, TickersHistoryResp},
@@ -69,5 +70,25 @@ async fn main() {
         .build()
         .unwrap();
     let r: RawBookResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:?}");
+
+    let endpoint = Stats::builder()
+        .key_args(KeyArgs::PosSize {
+            sym: "tBTCUSD",
+            side: Side::Long,
+        })
+        .section(Section::Last)
+        .build()
+        .unwrap();
+    let r: LastStatsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:?}");
+
+    let endpoint = Stats::builder()
+        .key_args(KeyArgs::VolOneDay { platform: "BFX" })
+        .section(Section::Hist)
+        .limit(5)
+        .build()
+        .unwrap();
+    let r: HistStatsResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:?}");
 }

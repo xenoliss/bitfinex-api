@@ -2,14 +2,7 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use super::{endpoint::Endpoint, params::QueryParams};
-
-#[derive(Debug, Clone, Copy)]
-#[repr(i8)]
-pub enum Sort {
-    Desc = -1,
-    Asc = 1,
-}
+use super::{common::Sort, endpoint::Endpoint, params::QueryParams};
 
 #[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
