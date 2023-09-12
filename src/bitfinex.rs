@@ -27,7 +27,7 @@ pub enum RestError {
 }
 
 const PUB_API_URL: &str = "https://api-pub.bitfinex.com/v2/";
-const AUTH_API_URL: &str = "https://api.bitfinex.com/v2/";
+// const AUTH_API_URL: &str = "https://api.bitfinex.com/v2/";
 
 #[derive(Debug)]
 pub struct Bitfinex {

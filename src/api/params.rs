@@ -3,24 +3,28 @@ use url::Url;
 /// A structure for query parameters.
 #[derive(Debug, Default, Clone)]
 pub struct QueryParams<'a> {
-    params: Vec<(&'a str, &'a str)>,
+    params: Vec<(&'a str, String)>,
 }
 
 impl<'a> QueryParams<'a> {
     /// Push a single parameter.
-    pub fn push(&mut self, key: impl Into<&'a str>, value: impl Into<&'a str>) -> &mut Self {
-        self.params.push((key.into(), value.into()));
+    pub fn push<K, V>(&mut self, key: K, value: V) -> &mut Self
+    where
+        K: Into<&'a str>,
+        V: ToString,
+    {
+        self.params.push((key.into(), value.to_string()));
         self
     }
 
     /// Push a single parameter.
-    pub fn push_opt(
-        &mut self,
-        key: impl Into<&'a str>,
-        value: Option<impl Into<&'a str>>,
-    ) -> &mut Self {
+    pub fn push_opt<K, V>(&mut self, key: K, value: Option<V>) -> &mut Self
+    where
+        K: Into<&'a str>,
+        V: ToString,
+    {
         if let Some(value) = value {
-            self.params.push((key.into(), value.into()));
+            self.params.push((key.into(), value.to_string()));
         }
         self
     }

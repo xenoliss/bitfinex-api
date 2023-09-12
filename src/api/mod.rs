@@ -1,6 +1,13 @@
 pub mod client;
+pub mod common;
 pub mod endpoint;
 pub mod error;
 pub mod params;
-pub mod platform_status;
 pub mod query;
+
+pub mod book;
+pub mod platform_status;
+pub mod ticker;
+pub mod tickers;
+pub mod tickers_history;
+pub mod trades;

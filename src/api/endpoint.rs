@@ -17,7 +17,7 @@ pub trait Endpoint {
     fn method(&self) -> Method;
 
     /// The path to the endpoint.
-    fn endpoint(&self) -> &'static str;
+    fn endpoint(&self) -> String;
 
     /// Query parameters for the endpoint.
     fn parameters(&self) -> QueryParams {
@@ -39,7 +39,7 @@ where
     C: Client,
 {
     fn query(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(self.endpoint())?;
+        let mut url = client.rest_endpoint(&self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()
@@ -85,7 +85,7 @@ where
     C: AsyncClient + Sync,
 {
     async fn query_async(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(self.endpoint())?;
+        let mut url = client.rest_endpoint(&self.endpoint())?;
         self.parameters().add_to_url(&mut url);
 
         let req = Request::builder()
