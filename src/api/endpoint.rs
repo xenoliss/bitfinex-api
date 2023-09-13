@@ -19,6 +19,9 @@ pub trait Endpoint {
     /// The path to the endpoint.
     fn endpoint(&self) -> String;
 
+    /// Whether this endpoint needs authorization.
+    fn is_authenticated(&self) -> bool;
+
     /// Query parameters for the endpoint.
     fn parameters(&self) -> QueryParams {
         QueryParams::default()
@@ -39,20 +42,30 @@ where
     C: Client,
 {
     fn query(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let is_authenicated = self.is_authenticated();
+        let endpoint = self.endpoint();
+
+        // Build the URL.
+        let mut url = client.rest_endpoint(&endpoint, is_authenicated)?;
+
+        // Add query parameters to the URL.
         self.parameters().add_to_url(&mut url);
 
         let request_builder = Request::builder()
             .method(self.method())
             .uri(url_to_http_uri(url));
 
+        // Add the body to the request if any.
         let (request_builder, data) = if let Some((mime, data)) = self.body() {
             (request_builder.header(header::CONTENT_TYPE, mime), data)
         } else {
             (request_builder, Vec::new())
         };
 
-        let rsp = client.rest(request_builder, data)?;
+        // Send off the request
+        let rsp = client.rest(request_builder, data, is_authenicated.then_some(endpoint))?;
+
+        // Check the response status and extract errors if needed.
         let status = rsp.status();
 
         let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {
@@ -69,6 +82,7 @@ where
             });
         }
 
+        // Deserialize into whatever type the caller is asking.
         serde_json::from_value::<T>(v.clone()).map_err(|e| ApiError::DataType {
             typename: any::type_name::<T>(),
             obj: v,
@@ -85,20 +99,32 @@ where
     C: AsyncClient + Sync,
 {
     async fn query_async(&self, client: &C) -> Result<T, ApiError<C::Error>> {
-        let mut url = client.rest_endpoint(&self.endpoint())?;
+        let is_authenicated = self.is_authenticated();
+        let endpoint = self.endpoint();
+
+        // Build the URL.
+        let mut url = client.rest_endpoint(&endpoint, is_authenicated)?;
+
+        // Add query parameters to the URL.
         self.parameters().add_to_url(&mut url);
 
         let request_builder = Request::builder()
             .method(self.method())
             .uri(url_to_http_uri(url));
 
+        // Add the body to the request if any.
         let (request_builder, data) = if let Some((mime, data)) = self.body() {
             (request_builder.header(header::CONTENT_TYPE, mime), data)
         } else {
             (request_builder, Vec::new())
         };
 
-        let rsp = client.rest_async(request_builder, data).await?;
+        // Send off the request
+        let rsp = client
+            .rest_async(request_builder, data, is_authenicated.then_some(endpoint))
+            .await?;
+
+        // Check the response status and extract errors if needed.
         let status = rsp.status();
 
         let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {
@@ -115,6 +141,7 @@ where
             });
         }
 
+        // Deserialize into whatever type the caller is asking.
         serde_json::from_value::<T>(v.clone()).map_err(|e| ApiError::DataType {
             typename: any::type_name::<T>(),
             obj: v,

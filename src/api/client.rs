@@ -15,7 +15,11 @@ pub trait RestClient {
     /// Get the URL for the endpoint for the client.
     ///
     /// This method adds the hostname for the client's target instance.
-    fn rest_endpoint(&self, endpoint: &str) -> Result<Url, ApiError<Self::Error>>;
+    fn rest_endpoint(
+        &self,
+        endpoint: &str,
+        is_authenticated: bool,
+    ) -> Result<Url, ApiError<Self::Error>>;
 }
 
 /// A trait representing a client which can communicate with the Bitfinex REST API.
@@ -25,6 +29,7 @@ pub trait Client: RestClient {
         &self,
         request_builder: RequestBuilder,
         body: Vec<u8>,
+        path_to_sign: Option<String>,
     ) -> Result<Response<Bytes>, ApiError<Self::Error>>;
 }
 
@@ -34,7 +39,8 @@ pub trait AsyncClient: RestClient {
     /// Send a REST query asynchronously.
     async fn rest_async(
         &self,
-        request_builder: RequestBuilder,
+        mut request_builder: RequestBuilder,
         body: Vec<u8>,
+        path_to_sign: Option<String>,
     ) -> Result<Response<Bytes>, ApiError<Self::Error>>;
 }

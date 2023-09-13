@@ -1,31 +1,47 @@
+use dotenv::dotenv;
+use dotenv_codegen::dotenv;
+
 use bitfinex_rs::{
     api::{
-        book::{
-            book::{Book, BookResp, Precision},
-            common::Len,
-            raw_book::{RawBook, RawBookResp},
+        authenticated::{
+            cancel_all_funding_offers::{CancelAllFundingOffers, CancelAllFundingOffersResp},
+            submit_funding_offer::{FundingOrderType, SubmitFundingOffer, SubmitFundingOfferResp},
+            wallets::{Wallets, WalletsResp},
         },
-        candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp},
         common::{Section, Symbols, TimeFrame},
-        derivative_status::{DerivativesStatus, DerivativesStatusResp},
-        derivative_status_history::{DerivativesStatusHistory, DerivativesStatusHistoryResp},
-        funding_statistics::{FundingStatistics, FundingStatisticsResp},
-        leaderboards::{HistLeaderBoardsResp, Key, Leaderboards},
-        liquidations::{Liquidations, LiquidationsResp},
-        platform_status::{PlatformStatus, PlatformStatusResp},
+        public::{
+            book::{
+                book::{Book, BookResp, Precision},
+                common::Len,
+                raw_book::{RawBook, RawBookResp},
+            },
+            candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp},
+            derivative_status::{DerivativesStatus, DerivativesStatusResp},
+            derivative_status_history::{DerivativesStatusHistory, DerivativesStatusHistoryResp},
+            funding_statistics::{FundingStatistics, FundingStatisticsResp},
+            leaderboards::{HistLeaderBoardsResp, Key, Leaderboards},
+            liquidations::{Liquidations, LiquidationsResp},
+            platform_status::{PlatformStatus, PlatformStatusResp},
+            stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
+            ticker::{Ticker, TickerResp},
+            tickers::{Tickers, TickersResp},
+            tickers_history::{TickersHistory, TickersHistoryResp},
+            trades::{Trades, TradesResp},
+        },
         query::AsyncQuery,
-        stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
-        ticker::{Ticker, TickerResp},
-        tickers::{Tickers, TickersResp},
-        tickers_history::{TickersHistory, TickersHistoryResp},
-        trades::{Trades, TradesResp},
     },
+    auth::Auth,
     bitfinex::AsyncBitfinex,
 };
 
 #[tokio::main]
 async fn main() {
-    let client = AsyncBitfinex::default();
+    public().await;
+    authenticated().await;
+}
+
+async fn public() {
+    let client = AsyncBitfinex::new(None);
 
     let endpoint = PlatformStatus::builder().build().unwrap();
     let r: PlatformStatusResp = endpoint.query_async(&client).await.unwrap();
@@ -161,5 +177,36 @@ async fn main() {
         .build()
         .unwrap();
     let r: FundingStatisticsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+}
+
+async fn authenticated() {
+    dotenv().ok();
+
+    let client = AsyncBitfinex::new(Some(Auth::new(
+        dotenv!("API_KEY").to_string(),
+        dotenv!("SECRET_KEY").to_string(),
+    )));
+
+    let endpoint = Wallets::builder().build().unwrap();
+    let r: WalletsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = SubmitFundingOffer::builder()
+        .ty(FundingOrderType::Limit)
+        .symbol("fUSD")
+        .amount(150.)
+        .rate(0.009)
+        .period(2)
+        .build()
+        .unwrap();
+    let r: SubmitFundingOfferResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = CancelAllFundingOffers::builder()
+        .currency("USD")
+        .build()
+        .unwrap();
+    let r: CancelAllFundingOffersResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 }
