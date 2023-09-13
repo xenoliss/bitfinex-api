@@ -75,7 +75,7 @@ You might want to implement your own endpoints and your own return type for them
 
 Let's see how we can simply create a new `Endpoint` from scratch. We're going to implement the [Liquidations](https://docs.bitfinex.com/reference/rest-public-liquidations) endpoint as an example.
 
-- First we need to create our endpoint type:
+- First we need to create the endpoint type:
 ```rs
 
 // Create the endpoint struct which gather all the query / body params that are needed to perform
@@ -101,7 +101,7 @@ impl Liquidations {
 }
 ```
 
-- Then we simply need to implement the `Endpoint` trait for it:
+- Then we need to implement the `Endpoint` trait:
 ```rs
 // Implement the `Endpoint` trait on our type.
 impl Endpoint for Liquidations {
@@ -136,9 +136,9 @@ impl Endpoint for Liquidations {
 
 That's it ! We created a new endpoint that can now be used in our application to retrieve the liquidations.
 
-Additionally to creating endpoints you might want to create the return type that fits your needs. Let's see how we can simply do that by creating our own `LiquidationsResp` that only contains the fields we are interested in. For this example let's say we only need the `POS_ID`, `SYMBOL` and `AMOUNT` fields from the returned response for each liquidation item:
+In addition to creating endpoints you might want to create the return type that fits your own needs. Let's see how we can create our own `LiquidationsResp` that only contains the fields we are interested in. For this example let's say we only need the `POS_ID`, `SYMBOL` and `AMOUNT` fields from each liquidation item:
 
-- Start by declaring our return type with the needed fields:
+- Start by declaring the return type with the needed fields:
 ```rs
 #[derive(Debug)]
 pub struct LiquidationResp {
@@ -148,15 +148,16 @@ pub struct LiquidationResp {
 }
 ```
 
-- Then due to how Bitfinex API returns the repsonse we need to manually implement the `serde::Deserialize` trait for it:
+- Then due to how Bitfinex API returns the repsonse we need to manually implement the `serde::Deserialize` trait:
 ```rs
 impl<'de> Deserialize<'de> for LiquidationResp {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        // 1. Defile the actual raw payload that is returned by the API.
-        // NOTE: This is a tuple struct! We need this because Bitfinex API returns responsed are array of values...
+        // 1. Define the raw payload that is returned by the API.
+        // NOTE: This is a tuple struct! We need this because Bitfinex API responses are arrays
+        // of values instead of clean JSON objects.
         #[derive(Debug, Deserialize)]
         struct LiquidationRawResp(
             String,
@@ -173,7 +174,8 @@ impl<'de> Deserialize<'de> for LiquidationResp {
             Option<f64>,
         );
 
-        // 2. Implement the `From` trait to convert the "raw" type (`LiquidationRawResp` here) into the targeted one (`LiquidationResp` here).
+        // 2. Implement the `From` trait to convert the raw type (`LiquidationRawResp` here) 
+        // into the targeted one (`LiquidationResp` here).
         impl From<LiquidationRawResp> for LiquidationResp {
             fn from(value: LiquidationRawResp) -> Self {
 
@@ -207,7 +209,7 @@ impl<'de> Deserialize<'de> for LiquidationResp {
         // if you look at the source code, but that's not important for the example.
         let raw = LiquidationRawResp::deserialize(deserializer)?;
 
-        // 4. Finally convert our `LiquidationRawResp` into our simple `LiquidationResp`.
+        // 4. Finally convert the `LiquidationRawResp` into a `LiquidationResp`.
         Ok(raw.into())
     }
 }
@@ -236,11 +238,11 @@ async fn main() {
         .unwrap();
 
     // 3. Perform the query against the endpoint.
-    let r: SubmitFundingOfferResp = endpoint.query_async(&client).await.unwrap();
+    let r: LiquidationsResp = endpoint.query_async(&client).await.unwrap();
 }
 ```
 
-Feel free to dig in the individual endpoints source code (under the `api/public` and `api/authenticated` folders) to see how the implementation varies depending on the endpoint path, query and body parameters.
+Feel free to dig in the individual endpoints source code (in the `api/public` and `api/authenticated` folders) to see how the implementations vary depending on the endpoint path, query and body parameters.
 
 ## Implemented Endpoints
 
