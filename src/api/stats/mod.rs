@@ -4,22 +4,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use super::{common::Sort, endpoint::Endpoint, params::QueryParams};
-
-#[derive(Debug, Clone, Copy)]
-pub enum Section {
-    Hist,
-    Last,
-}
-
-impl Display for Section {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Section::Hist => write!(f, "hist"),
-            Section::Last => write!(f, "last"),
-        }
-    }
-}
+use super::{
+    common::{Section, Sort},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Copy)]
 pub enum Size {

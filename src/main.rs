@@ -5,10 +5,11 @@ use bitfinex_rs::{
             common::Len,
             raw_book::{RawBook, RawBookResp},
         },
-        common::Symbols,
+        candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp, TimeFrame},
+        common::{Section, Symbols},
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
-        stats::{HistStatsResp, KeyArgs, LastStatsResp, Section, Side, Stats},
+        stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
         ticker::{Ticker, TickerResp},
         tickers::{Tickers, TickersResp},
         tickers_history::{TickersHistory, TickersHistoryResp},
@@ -90,5 +91,32 @@ async fn main() {
         .build()
         .unwrap();
     let r: HistStatsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:?}");
+
+    let endpoint = Candles::builder()
+        .candles(AvailableCandles::FundingCandles {
+            time_frame: TimeFrame::FifteenMins,
+            currency: "fUSD",
+            period: 120,
+        })
+        .section(Section::Last)
+        .build()
+        .unwrap();
+    let r: LastCandlesResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:?}");
+
+    let endpoint = Candles::builder()
+        .candles(AvailableCandles::AggregateFundingCandles {
+            time_frame: TimeFrame::FifteenMins,
+            currency: "fUSD",
+            aggregation: 30,
+            period_start: 2,
+            period_end: 30,
+        })
+        .section(Section::Hist)
+        .limit(2)
+        .build()
+        .unwrap();
+    let r: HistCandlesResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:?}");
 }
