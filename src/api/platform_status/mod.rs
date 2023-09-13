@@ -46,9 +46,7 @@ impl<'de> Deserialize<'de> for PlatformStatusResp {
             }
         }
 
-        let raw = Vec::<PlatformStatusRespRaw>::deserialize(deserializer)?
-            .pop()
-            .unwrap();
+        let [raw] = <[PlatformStatusRespRaw; 1]>::deserialize(deserializer)?;
         Ok(raw.into())
     }
 }

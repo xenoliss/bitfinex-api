@@ -9,6 +9,7 @@ use bitfinex_rs::{
         common::{Section, Symbols},
         derivative_status::{DerivativesStatus, DerivativesStatusesResp},
         derivative_status_history::{DerivativesStatusHistory, DerivativesStatusesHistoryResp},
+        liquidations::{Liquidations, LiquidationsResp},
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
         stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
@@ -135,5 +136,9 @@ async fn main() {
         .build()
         .unwrap();
     let r: DerivativesStatusesHistoryResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = Liquidations::builder().limit(3).build().unwrap();
+    let r: LiquidationsResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 }
