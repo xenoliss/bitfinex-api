@@ -31,10 +31,10 @@ impl<'a> Endpoint for DerivativesStatus<'a> {
     }
 }
 
-pub type DerivativesStatusesResp = Vec<DerivativesStatusResp>;
+pub type DerivativesStatusResp = Vec<DerivativeStatusResp>;
 
 #[derive(Debug)]
-pub struct DerivativesStatusResp {
+pub struct DerivativeStatusResp {
     pub key: String,
     pub mts: u64,
     pub derive_price: f64,
@@ -50,13 +50,13 @@ pub struct DerivativesStatusResp {
     pub clamp_max: f64,
 }
 
-impl<'de> Deserialize<'de> for DerivativesStatusResp {
+impl<'de> Deserialize<'de> for DerivativeStatusResp {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct DerivativesStatusRawResp(
+        struct DerivativeStatusRawResp(
             String,
             u64,
             Option<()>,
@@ -83,8 +83,8 @@ impl<'de> Deserialize<'de> for DerivativesStatusResp {
             f64,
         );
 
-        impl From<DerivativesStatusRawResp> for DerivativesStatusResp {
-            fn from(value: DerivativesStatusRawResp) -> Self {
+        impl From<DerivativeStatusRawResp> for DerivativeStatusResp {
+            fn from(value: DerivativeStatusRawResp) -> Self {
                 Self {
                     key: value.0,
                     mts: value.1,
@@ -103,7 +103,7 @@ impl<'de> Deserialize<'de> for DerivativesStatusResp {
             }
         }
 
-        let raw: DerivativesStatusRawResp = DerivativesStatusRawResp::deserialize(deserializer)?;
+        let raw: DerivativeStatusRawResp = DerivativeStatusRawResp::deserialize(deserializer)?;
         Ok(raw.into())
     }
 }

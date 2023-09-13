@@ -5,45 +5,10 @@ use http::Method;
 use serde::Deserialize;
 
 use super::{
-    common::{Section, Sort},
+    common::{Section, Sort, TimeFrame},
     endpoint::Endpoint,
     params::QueryParams,
 };
-
-#[derive(Debug, Clone, Copy)]
-pub enum TimeFrame {
-    OneMin,
-    FiveMins,
-    FifteenMins,
-    ThirtyMins,
-    OneHour,
-    ThreeHours,
-    SixHours,
-    TwelveHours,
-    OneDay,
-    OneWeek,
-    FourteenDays,
-    OneMonth,
-}
-
-impl Display for TimeFrame {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            TimeFrame::OneMin => write!(f, "1m"),
-            TimeFrame::FiveMins => write!(f, "5m"),
-            TimeFrame::FifteenMins => write!(f, "15m"),
-            TimeFrame::ThirtyMins => write!(f, "30m"),
-            TimeFrame::OneHour => write!(f, "1h"),
-            TimeFrame::ThreeHours => write!(f, "3h"),
-            TimeFrame::SixHours => write!(f, "6h"),
-            TimeFrame::TwelveHours => write!(f, "12h"),
-            TimeFrame::OneDay => write!(f, "1D"),
-            TimeFrame::OneWeek => write!(f, "1W"),
-            TimeFrame::FourteenDays => write!(f, "14D"),
-            TimeFrame::OneMonth => write!(f, "1M"),
-        }
-    }
-}
 
 #[derive(Debug, Clone, Copy)]
 pub enum AvailableCandles<'a> {
@@ -132,11 +97,11 @@ impl<'a> Endpoint for Candles<'a> {
     }
 }
 
-pub type LastCandlesResp = CandlesResp;
-pub type HistCandlesResp = Vec<CandlesResp>;
+pub type LastCandlesResp = CandleResp;
+pub type HistCandlesResp = Vec<CandleResp>;
 
 #[derive(Debug)]
-pub struct CandlesResp {
+pub struct CandleResp {
     pub mts: u64,
     pub open: f64,
     pub close: f64,
@@ -145,16 +110,16 @@ pub struct CandlesResp {
     pub volume: f64,
 }
 
-impl<'de> Deserialize<'de> for CandlesResp {
+impl<'de> Deserialize<'de> for CandleResp {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct CandlesRespRaw(u64, f64, f64, f64, f64, f64);
+        struct CandlesRawResp(u64, f64, f64, f64, f64, f64);
 
-        impl From<CandlesRespRaw> for CandlesResp {
-            fn from(value: CandlesRespRaw) -> Self {
+        impl From<CandlesRawResp> for CandleResp {
+            fn from(value: CandlesRawResp) -> Self {
                 Self {
                     mts: value.0,
                     open: value.1,
@@ -166,7 +131,7 @@ impl<'de> Deserialize<'de> for CandlesResp {
             }
         }
 
-        let raw = CandlesRespRaw::deserialize(deserializer)?;
+        let raw = CandlesRawResp::deserialize(deserializer)?;
         Ok(raw.into())
     }
 }

@@ -9,6 +9,7 @@ pub mod book;
 pub mod candles;
 pub mod derivative_status;
 pub mod derivative_status_history;
+pub mod leaderboards;
 pub mod liquidations;
 pub mod platform_status;
 pub mod stats;

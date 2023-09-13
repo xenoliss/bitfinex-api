@@ -5,10 +5,11 @@ use bitfinex_rs::{
             common::Len,
             raw_book::{RawBook, RawBookResp},
         },
-        candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp, TimeFrame},
-        common::{Section, Symbols},
-        derivative_status::{DerivativesStatus, DerivativesStatusesResp},
-        derivative_status_history::{DerivativesStatusHistory, DerivativesStatusesHistoryResp},
+        candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp},
+        common::{Section, Symbols, TimeFrame},
+        derivative_status::{DerivativesStatus, DerivativesStatusResp},
+        derivative_status_history::{DerivativesStatusHistory, DerivativesStatusHistoryResp},
+        leaderboards::{HistLeaderBoardsResp, Key, Leaderboards},
         liquidations::{Liquidations, LiquidationsResp},
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
@@ -127,7 +128,7 @@ async fn main() {
         .keys(Symbols::Only(vec!["tBTCF0:USTF0", "tETHF0:USTF0"]))
         .build()
         .unwrap();
-    let r: DerivativesStatusesResp = endpoint.query_async(&client).await.unwrap();
+    let r: DerivativesStatusResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 
     let endpoint = DerivativesStatusHistory::builder()
@@ -135,10 +136,21 @@ async fn main() {
         .limit(1)
         .build()
         .unwrap();
-    let r: DerivativesStatusesHistoryResp = endpoint.query_async(&client).await.unwrap();
+    let r: DerivativesStatusHistoryResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 
     let endpoint = Liquidations::builder().limit(3).build().unwrap();
     let r: LiquidationsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = Leaderboards::builder()
+        .key(Key::Plr)
+        .time_frame(TimeFrame::OneMonth)
+        .symbol("tGLOBAL:USD")
+        .section(Section::Hist)
+        .limit(5)
+        .build()
+        .unwrap();
+    let r: HistLeaderBoardsResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 }
