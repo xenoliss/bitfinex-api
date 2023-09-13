@@ -6,6 +6,7 @@ use bitfinex_rs::{
         authenticated::{
             active_funding_offers::{ActiveFundingOffers, ActiveFundingOffersResp},
             cancel_all_funding_offers::{CancelAllFundingOffers, CancelAllFundingOffersResp},
+            cancel_funding_offer::{CancelFundingOffer, CancelFundingOfferResp},
             submit_funding_offer::{FundingOrderType, SubmitFundingOffer, SubmitFundingOfferResp},
             wallets::{Wallets, WalletsResp},
         },
@@ -212,5 +213,9 @@ async fn authenticated() {
         .build()
         .unwrap();
     let r: ActiveFundingOffersResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = CancelFundingOffer::builder().id(12345).build().unwrap();
+    let r: CancelFundingOfferResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 }
