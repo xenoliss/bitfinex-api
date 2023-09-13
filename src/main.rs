@@ -8,6 +8,7 @@ use bitfinex_rs::{
         candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp, TimeFrame},
         common::{Section, Symbols},
         derivative_status::{DerivativesStatus, DerivativesStatusesResp},
+        derivative_status_history::{DerivativesStatusHistory, DerivativesStatusesHistoryResp},
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
         stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
@@ -25,18 +26,18 @@ async fn main() {
 
     let endpoint = PlatformStatus::builder().build().unwrap();
     let r: PlatformStatusResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Ticker::builder().symbol("tBTCUSD").build().unwrap();
     let r: TickerResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Tickers::builder()
         .symbols(Symbols::Only(vec!["tBTCUSD"]))
         .build()
         .unwrap();
     let r: TickersResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = TickersHistory::builder()
         .symbols(Symbols::Only(vec!["tBTCUSD", "tARBF0:USTF0"]))
@@ -46,7 +47,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: TickersHistoryResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Trades::builder()
         .symbol("tBTCUSD")
@@ -55,7 +56,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: TradesResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Book::builder()
         .symbol("fUSD")
@@ -64,7 +65,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: BookResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = RawBook::builder()
         .symbol("tBTCUSD")
@@ -72,7 +73,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: RawBookResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Stats::builder()
         .key_args(KeyArgs::PosSize {
@@ -83,7 +84,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: LastStatsResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Stats::builder()
         .key_args(KeyArgs::VolOneDay { platform: "BFX" })
@@ -92,7 +93,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: HistStatsResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Candles::builder()
         .candles(AvailableCandles::FundingCandles {
@@ -104,7 +105,7 @@ async fn main() {
         .build()
         .unwrap();
     let r: LastCandlesResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = Candles::builder()
         .candles(AvailableCandles::AggregateFundingCandles {
@@ -119,12 +120,20 @@ async fn main() {
         .build()
         .unwrap();
     let r: HistCandlesResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
 
     let endpoint = DerivativesStatus::builder()
-        .keys(Symbols::All)
+        .keys(Symbols::Only(vec!["tBTCF0:USTF0", "tETHF0:USTF0"]))
         .build()
         .unwrap();
     let r: DerivativesStatusesResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:?}");
+    println!("{r:#?}");
+
+    let endpoint = DerivativesStatusHistory::builder()
+        .key("tBTCF0:USTF0")
+        .limit(1)
+        .build()
+        .unwrap();
+    let r: DerivativesStatusesHistoryResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
 }
