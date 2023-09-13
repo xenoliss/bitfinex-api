@@ -19,7 +19,7 @@ impl Endpoint for PlatformStatus {
     }
 
     fn endpoint(&self) -> String {
-        "platform/status".into()
+        String::from("platform/status")
     }
 }
 

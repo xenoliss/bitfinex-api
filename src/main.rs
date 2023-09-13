@@ -7,6 +7,7 @@ use bitfinex_rs::{
         },
         candles::{AvailableCandles, Candles, HistCandlesResp, LastCandlesResp, TimeFrame},
         common::{Section, Symbols},
+        derivative_status::{DerivativesStatus, DerivativesStatusesResp},
         platform_status::{PlatformStatus, PlatformStatusResp},
         query::AsyncQuery,
         stats::{HistStatsResp, KeyArgs, LastStatsResp, Side, Stats},
@@ -118,5 +119,12 @@ async fn main() {
         .build()
         .unwrap();
     let r: HistCandlesResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:?}");
+
+    let endpoint = DerivativesStatus::builder()
+        .keys(Symbols::All)
+        .build()
+        .unwrap();
+    let r: DerivativesStatusesResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:?}");
 }

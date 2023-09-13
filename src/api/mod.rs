@@ -7,6 +7,7 @@ pub mod query;
 
 pub mod book;
 pub mod candles;
+pub mod derivative_status;
 pub mod platform_status;
 pub mod stats;
 pub mod ticker;

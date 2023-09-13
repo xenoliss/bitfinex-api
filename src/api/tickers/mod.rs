@@ -21,7 +21,7 @@ impl<'a> Endpoint for Tickers<'a> {
     }
 
     fn endpoint(&self) -> String {
-        "tickers".into()
+        String::from("tickers")
     }
 
     fn parameters(&self) -> QueryParams {
