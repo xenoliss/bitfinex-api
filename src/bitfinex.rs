@@ -61,24 +61,54 @@ pub struct AsyncBitfinex {
 }
 
 impl Bitfinex {
-    pub fn new(auth: Option<Auth>) -> Self {
+    pub fn new() -> Self {
         Self {
             client: ReqClient::new(),
             pub_rest_url: Url::parse(PUB_API_URL).unwrap(),
             authenticated_rest_url: Url::parse(AUTH_API_URL).unwrap(),
-            auth,
+            auth: None,
+        }
+    }
+
+    pub fn new_auth(api_key: &str, secret_key: &str) -> Self {
+        Self {
+            client: ReqClient::new(),
+            pub_rest_url: Url::parse(PUB_API_URL).unwrap(),
+            authenticated_rest_url: Url::parse(AUTH_API_URL).unwrap(),
+            auth: Some(Auth::new(api_key.to_string(), secret_key.to_string())),
         }
     }
 }
 
+impl Default for Bitfinex {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl AsyncBitfinex {
-    pub fn new(auth: Option<Auth>) -> Self {
+    pub fn new() -> Self {
         Self {
             client: ReqAsyncClient::new(),
             pub_rest_url: Url::parse(PUB_API_URL).unwrap(),
             authenticated_rest_url: Url::parse(AUTH_API_URL).unwrap(),
-            auth,
+            auth: None,
         }
+    }
+
+    pub fn new_auth(api_key: &str, secret_key: &str) -> Self {
+        Self {
+            client: ReqAsyncClient::new(),
+            pub_rest_url: Url::parse(PUB_API_URL).unwrap(),
+            authenticated_rest_url: Url::parse(AUTH_API_URL).unwrap(),
+            auth: Some(Auth::new(api_key.to_string(), secret_key.to_string())),
+        }
+    }
+}
+
+impl Default for AsyncBitfinex {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
