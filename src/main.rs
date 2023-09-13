@@ -9,6 +9,7 @@ use bitfinex_rs::{
         common::{Section, Symbols, TimeFrame},
         derivative_status::{DerivativesStatus, DerivativesStatusResp},
         derivative_status_history::{DerivativesStatusHistory, DerivativesStatusHistoryResp},
+        funding_statistics::{FundingStatistics, FundingStatisticsResp},
         leaderboards::{HistLeaderBoardsResp, Key, Leaderboards},
         liquidations::{Liquidations, LiquidationsResp},
         platform_status::{PlatformStatus, PlatformStatusResp},
@@ -152,5 +153,13 @@ async fn main() {
         .build()
         .unwrap();
     let r: HistLeaderBoardsResp = endpoint.query_async(&client).await.unwrap();
+    println!("{r:#?}");
+
+    let endpoint = FundingStatistics::builder()
+        .symbol("fUSD")
+        .limit(3)
+        .build()
+        .unwrap();
+    let r: FundingStatisticsResp = endpoint.query_async(&client).await.unwrap();
     println!("{r:#?}");
 }
