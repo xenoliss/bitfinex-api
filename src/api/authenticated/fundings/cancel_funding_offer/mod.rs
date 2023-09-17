@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::endpoint::Endpoint;
 
+use super::types::{FundingOffer, FundingOfferRaw};
+
 #[derive(Debug, Clone, Copy, Builder, Serialize)]
 pub struct CancelFundingOffer {
     id: u64,
@@ -39,19 +41,7 @@ pub struct CancelFundingOfferResp {
     pub mts: u64,
     pub ty: String,
     pub message_id: u64,
-    pub id: u64,
-    pub symbol: String,
-    pub mts_created: u64,
-    pub mts_updated: u64,
-    pub amount: f64,
-    pub amount_orig: f64,
-    pub offer_type: String,
-    pub offer_status: String,
-    pub rate: f64,
-    pub period: u8,
-    pub notify: bool,
-    pub hidden: bool,
-    pub renew: bool,
+    pub offer: FundingOffer,
     pub code: Option<u64>,
     pub status: String,
     pub text: String,
@@ -66,93 +56,23 @@ impl<'de> Deserialize<'de> for CancelFundingOfferResp {
         struct CancelFundingOfferRawResp(
             u64,
             String,
-            Option<()>,
-            Option<()>,
-            SubmitFundingOfferInternalRawResp,
-            Option<()>,
-            String,
-            String,
-        );
-
-        #[derive(Debug, Deserialize)]
-        struct SubmitFundingOfferInternalRawResp(
             u64,
-            u64,
-            String,
-            u64,
-            u64,
-            f64,
-            f64,
-            String,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            String,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            f64,
-            u8,
-            bool,
-            u8,
-            Option<()>,
-            bool,
+            FundingOfferRaw,
             Option<u64>,
+            String,
+            String,
         );
 
         impl From<CancelFundingOfferRawResp> for CancelFundingOfferResp {
             fn from(value: CancelFundingOfferRawResp) -> Self {
-                let CancelFundingOfferRawResp(
-                    mts,
-                    ty,
-                    _,
-                    _,
-                    SubmitFundingOfferInternalRawResp(
-                        message_id,
-                        id,
-                        symbol,
-                        mts_created,
-                        mts_updated,
-                        amount,
-                        amount_orig,
-                        offer_type,
-                        _,
-                        _,
-                        _,
-                        offer_status,
-                        _,
-                        _,
-                        _,
-                        rate,
-                        period,
-                        notify,
-                        hidden,
-                        _,
-                        renew,
-                        code,
-                    ),
-                    _,
-                    status,
-                    text,
-                ) = value;
+                let CancelFundingOfferRawResp(mts, ty, message_id, offer, code, status, text) =
+                    value;
 
                 Self {
                     mts,
                     ty,
                     message_id,
-                    id,
-                    symbol,
-                    mts_created,
-                    mts_updated,
-                    amount,
-                    amount_orig,
-                    offer_type,
-                    offer_status,
-                    rate,
-                    period,
-                    notify,
-                    hidden: hidden == 1,
-                    renew,
+                    offer: offer.into(),
                     code,
                     status,
                     text,

@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 use derive_builder::Builder;
 use http::Method;
 use serde::{Deserialize, Serialize};
@@ -7,27 +5,19 @@ use serde_with::serde_as;
 
 use crate::api::endpoint::Endpoint;
 
+use super::types::{FundingOffer, FundingOfferRaw};
+
 #[derive(Debug, Clone, Copy, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum FundingOrderType {
     Limit,
     FrrDeltaFix,
     FrrDeltaVar,
 }
 
-impl Display for FundingOrderType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            FundingOrderType::Limit => write!(f, "LIMIT"),
-            FundingOrderType::FrrDeltaFix => write!(f, "FRRDELTAFIX"),
-            FundingOrderType::FrrDeltaVar => write!(f, "FRRDELTAVAR"),
-        }
-    }
-}
-
 #[serde_as]
 #[derive(Debug, Clone, Copy, Builder, Serialize)]
 pub struct SubmitFundingOffer<'a> {
-    #[serde_as(as = "serde_with::DisplayFromStr")]
     #[serde(rename(serialize = "type"))]
     ty: FundingOrderType,
     symbol: &'a str,
@@ -68,19 +58,8 @@ pub struct SubmitFundingOfferResp {
     pub mts: u64,
     pub ty: String,
     pub message_id: u64,
-    pub symbol: String,
-    pub mts_created: u64,
-    pub mts_updated: u64,
-    pub amount: f64,
-    pub amount_orig: f64,
-    pub offer_type: String,
-    pub offer_status: String,
-    pub rate: f64,
-    pub period: u8,
-    pub notify: bool,
-    pub hidden: bool,
-    pub renew: bool,
-    pub code: Option<u64>,
+    pub offer: FundingOffer,
+    pub code: u64,
     pub status: String,
     pub text: String,
 }
@@ -91,93 +70,18 @@ impl<'de> Deserialize<'de> for SubmitFundingOfferResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct SubmitFundingOfferRawResp(
-            u64,
-            String,
-            Option<()>,
-            Option<()>,
-            SubmitFundingOfferInternalRawResp,
-            Option<()>,
-            String,
-            String,
-        );
-
-        #[derive(Debug, Deserialize)]
-        struct SubmitFundingOfferInternalRawResp(
-            u64,
-            String,
-            u64,
-            u64,
-            f64,
-            f64,
-            String,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            String,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            f64,
-            u8,
-            bool,
-            u8,
-            Option<()>,
-            bool,
-            Option<u64>,
-        );
+        struct SubmitFundingOfferRawResp(u64, String, u64, FundingOfferRaw, u64, String, String);
 
         impl From<SubmitFundingOfferRawResp> for SubmitFundingOfferResp {
             fn from(value: SubmitFundingOfferRawResp) -> Self {
-                let SubmitFundingOfferRawResp(
-                    mts,
-                    ty,
-                    _,
-                    _,
-                    SubmitFundingOfferInternalRawResp(
-                        message_id,
-                        symbol,
-                        mts_created,
-                        mts_updated,
-                        amount,
-                        amount_orig,
-                        offer_type,
-                        _,
-                        _,
-                        _,
-                        offer_status,
-                        _,
-                        _,
-                        _,
-                        rate,
-                        period,
-                        notify,
-                        hidden,
-                        _,
-                        renew,
-                        code,
-                    ),
-                    _,
-                    status,
-                    text,
-                ) = value;
+                let SubmitFundingOfferRawResp(mts, ty, message_id, offer, code, status, text) =
+                    value;
 
                 Self {
                     mts,
                     ty,
                     message_id,
-                    symbol,
-                    mts_created,
-                    mts_updated,
-                    amount,
-                    amount_orig,
-                    offer_type,
-                    offer_status,
-                    rate,
-                    period,
-                    notify,
-                    hidden: hidden == 1,
-                    renew,
+                    offer: offer.into(),
                     code,
                     status,
                     text,
