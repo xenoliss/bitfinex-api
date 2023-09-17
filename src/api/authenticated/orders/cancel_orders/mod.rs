@@ -6,15 +6,36 @@ use crate::api::{authenticated::orders::types::OrderRaw, endpoint::Endpoint};
 
 use super::types::Order;
 
-#[derive(Debug, Builder, Serialize)]
+#[derive(Debug, Clone)]
+pub enum CancelOrdersType {
+    OnlyIds(Vec<u64>),
+    All,
+}
+
+#[derive(Debug, Builder)]
 pub struct CancelOrders {
-    #[serde(rename(serialize = "id"))]
-    ids: Vec<u64>,
+    cancel_orders_type: CancelOrdersType,
 }
 
 impl CancelOrders {
     pub fn builder() -> CancelOrdersBuilder {
         CancelOrdersBuilder::default()
+    }
+
+    fn json_body(&self) -> String {
+        match &self.cancel_orders_type {
+            CancelOrdersType::OnlyIds(ids) => {
+                #[derive(Debug, Serialize)]
+                pub struct JsonParams<'a> {
+                    id: &'a Vec<u64>,
+                }
+
+                let p = JsonParams { id: ids };
+
+                serde_json::to_string(&p).unwrap()
+            }
+            CancelOrdersType::All => String::from("{\"all\": \"1\"}"),
+        }
     }
 }
 
@@ -32,8 +53,7 @@ impl Endpoint for CancelOrders {
     }
 
     fn body(&self) -> Option<(&'static str, Vec<u8>)> {
-        let body = serde_json::to_string(self).unwrap();
-        Some(("application/json", body.into_bytes()))
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 

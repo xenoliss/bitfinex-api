@@ -7,33 +7,84 @@ use crate::api::{authenticated::orders::types::OrderRaw, endpoint::Endpoint};
 
 use super::types::{Order, OrderType};
 
-#[serde_as]
-#[derive(Debug, Builder, Serialize)]
+#[derive(Debug, Builder)]
 #[builder(setter(strip_option))]
 pub struct SubmitOrder<'a> {
-    #[serde(rename(serialize = "type"))]
     ty: OrderType,
     symbol: &'a str,
-    #[serde_as(as = "serde_with::DisplayFromStr")]
     amount: f64,
-    #[serde_as(as = "serde_with::DisplayFromStr")]
     price: f64,
+    #[builder(default)]
     lev: Option<u8>,
-    #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+    #[builder(default)]
     price_trailing: Option<f64>,
-    #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+    #[builder(default)]
     price_aux_limit: Option<f64>,
-    #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+    #[builder(default)]
     price_oco_stop: Option<f64>,
+    #[builder(default)]
     gid: Option<u64>,
+    #[builder(default)]
     cid: Option<u64>,
+    #[builder(default)]
     flags: Option<u64>,
-    tif: Option<String>,
+    #[builder(default)]
+    tif: Option<&'a str>,
 }
 
 impl<'a> SubmitOrder<'a> {
     pub fn builder() -> SubmitOrderBuilder<'a> {
         SubmitOrderBuilder::default()
+    }
+
+    fn json_body(&self) -> String {
+        #[serde_as]
+        #[derive(Debug, Serialize)]
+        pub struct JsonParams<'a> {
+            #[serde(rename(serialize = "type"))]
+            ty: OrderType,
+            symbol: &'a str,
+            #[serde_as(as = "serde_with::DisplayFromStr")]
+            amount: f64,
+            #[serde_as(as = "serde_with::DisplayFromStr")]
+            price: f64,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            lev: Option<u8>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            price_trailing: Option<f64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            price_aux_limit: Option<f64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            price_oco_stop: Option<f64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            gid: Option<u64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            cid: Option<u64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            flags: Option<u64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            tif: &'a Option<&'a str>,
+        }
+
+        let p = JsonParams {
+            ty: self.ty,
+            symbol: self.symbol,
+            amount: self.amount,
+            price: self.price,
+            lev: self.lev,
+            price_trailing: self.price_trailing,
+            price_aux_limit: self.price_aux_limit,
+            price_oco_stop: self.price_oco_stop,
+            gid: self.gid,
+            cid: self.cid,
+            flags: self.flags,
+            tif: &self.tif,
+        };
+
+        serde_json::to_string(&p).unwrap()
     }
 }
 
@@ -51,8 +102,7 @@ impl<'a> Endpoint for SubmitOrder<'a> {
     }
 
     fn body(&self) -> Option<(&'static str, Vec<u8>)> {
-        let body = serde_json::to_string(self).unwrap();
-        Some(("application/json", body.into_bytes()))
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 

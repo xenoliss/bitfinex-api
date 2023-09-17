@@ -15,15 +15,11 @@ pub enum FundingOrderType {
     FrrDeltaVar,
 }
 
-#[serde_as]
-#[derive(Debug, Clone, Copy, Builder, Serialize)]
+#[derive(Debug, Clone, Copy, Builder)]
 pub struct SubmitFundingOffer<'a> {
-    #[serde(rename(serialize = "type"))]
     ty: FundingOrderType,
     symbol: &'a str,
-    #[serde_as(as = "serde_with::DisplayFromStr")]
     amount: f64,
-    #[serde_as(as = "serde_with::DisplayFromStr")]
     rate: f64,
     period: u8,
 }
@@ -31,6 +27,29 @@ pub struct SubmitFundingOffer<'a> {
 impl<'a> SubmitFundingOffer<'a> {
     pub fn builder() -> SubmitFundingOfferBuilder<'a> {
         SubmitFundingOfferBuilder::default()
+    }
+
+    fn json_body(&self) -> String {
+        #[serde_as]
+        #[derive(Debug, Serialize)]
+        pub struct JsonParams<'a> {
+            #[serde(rename(serialize = "type"))]
+            ty: FundingOrderType,
+            symbol: &'a str,
+            #[serde_as(as = "serde_with::DisplayFromStr")]
+            amount: f64,
+            #[serde_as(as = "serde_with::DisplayFromStr")]
+            rate: f64,
+        }
+
+        let p = JsonParams {
+            ty: self.ty,
+            symbol: self.symbol,
+            amount: self.amount,
+            rate: self.rate,
+        };
+
+        serde_json::to_string(&p).unwrap()
     }
 }
 
@@ -48,8 +67,7 @@ impl<'a> Endpoint for SubmitFundingOffer<'a> {
     }
 
     fn body(&self) -> Option<(&'static str, Vec<u8>)> {
-        let body = serde_json::to_string(self).unwrap();
-        Some(("application/json", body.into_bytes()))
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 

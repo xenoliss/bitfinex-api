@@ -6,7 +6,7 @@ use crate::api::endpoint::Endpoint;
 
 use super::types::{FundingOffer, FundingOfferRaw};
 
-#[derive(Debug, Clone, Copy, Builder, Serialize)]
+#[derive(Debug, Clone, Copy, Builder)]
 pub struct CancelFundingOffer {
     id: u64,
 }
@@ -14,6 +14,17 @@ pub struct CancelFundingOffer {
 impl CancelFundingOffer {
     pub fn builder() -> CancelFundingOfferBuilder {
         CancelFundingOfferBuilder::default()
+    }
+
+    fn json_body(&self) -> String {
+        #[derive(Debug, Serialize)]
+        pub struct JsonParams {
+            id: u64,
+        }
+
+        let p = JsonParams { id: self.id };
+
+        serde_json::to_string(&p).unwrap()
     }
 }
 
@@ -31,8 +42,7 @@ impl Endpoint for CancelFundingOffer {
     }
 
     fn body(&self) -> Option<(&'static str, Vec<u8>)> {
-        let body = serde_json::to_string(self).unwrap();
-        Some(("application/json", body.into_bytes()))
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::endpoint::Endpoint;
 
-#[derive(Debug, Clone, Copy, Builder, Serialize)]
+#[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
 pub struct CancelAllFundingOffers<'a> {
     #[builder(default)]
@@ -14,6 +14,19 @@ pub struct CancelAllFundingOffers<'a> {
 impl<'a> CancelAllFundingOffers<'a> {
     pub fn builder() -> CancelAllFundingOffersBuilder<'a> {
         CancelAllFundingOffersBuilder::default()
+    }
+
+    fn json_body(&self) -> String {
+        #[derive(Debug, Serialize)]
+        pub struct JsonParams<'a> {
+            currency: &'a Option<&'a str>,
+        }
+
+        let p = JsonParams {
+            currency: &self.currency,
+        };
+
+        serde_json::to_string(&p).unwrap()
     }
 }
 
@@ -31,8 +44,7 @@ impl<'a> Endpoint for CancelAllFundingOffers<'a> {
     }
 
     fn body(&self) -> Option<(&'static str, Vec<u8>)> {
-        let body = serde_json::to_string(self).unwrap();
-        Some(("application/json", body.into_bytes()))
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 

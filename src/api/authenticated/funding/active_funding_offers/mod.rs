@@ -1,12 +1,11 @@
 use derive_builder::Builder;
 use http::Method;
-use serde::Serialize;
 
 use crate::api::endpoint::Endpoint;
 
 use super::types::FundingOffer;
 
-#[derive(Debug, Clone, Copy, Builder, Serialize)]
+#[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
 pub struct ActiveFundingOffers<'a> {
     #[builder(default)]

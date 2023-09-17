@@ -11,14 +11,15 @@ use bitfinex_rs::{
             },
             orders::{
                 cancel_order::{CancelOrder, CancelOrderResp},
-                cancel_orders::{CancelOrders, CancelOrdersResp},
+                cancel_orders::{CancelOrders, CancelOrdersResp, CancelOrdersType},
                 retrieve_orders::{RetrieveOrders, RetrieveOrdersResp},
                 retrieve_orders_by_symbol::{RetrieveOrdersBySymbol, RetrieveOrdersBySymbolResp},
-                submit_order::SubmitOrder,
+                submit_order::{SubmitOrder, SubmitOrderResp},
                 types::OrderType,
             },
             wallets::{Wallets, WalletsResp},
         },
+        ignore::ignore,
         query::AsyncQuery,
     },
     bitfinex::AsyncBitfinex,
@@ -29,8 +30,9 @@ async fn main() {
     let client = AsyncBitfinex::new_auth("YOUR_API_KEY", "YOUR_SECRET_KEY");
 
     let endpoint = Wallets::builder().build().unwrap();
-    let r: WalletsResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: WalletsResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = SubmitFundingOffer::builder()
         .ty(FundingOrderType::Limit)
@@ -40,56 +42,66 @@ async fn main() {
         .period(2)
         .build()
         .unwrap();
-    let r: SubmitFundingOfferResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: SubmitFundingOfferResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = CancelAllFundingOffers::builder()
         .currency("USD")
         .build()
         .unwrap();
-    let r: CancelAllFundingOffersResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: CancelAllFundingOffersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = ActiveFundingOffers::builder()
         .symbol("fUSD")
         .build()
         .unwrap();
-    let r: ActiveFundingOffersResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: ActiveFundingOffersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = CancelFundingOffer::builder().id(12345).build().unwrap();
-    let r: CancelFundingOfferResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: CancelFundingOfferResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = RetrieveOrders::builder().build().unwrap();
-    let r: RetrieveOrdersResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: RetrieveOrdersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = RetrieveOrdersBySymbol::builder()
         .symbol("tBTCUSD")
         .build()
         .unwrap();
-    let r: RetrieveOrdersBySymbolResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: RetrieveOrdersBySymbolResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = SubmitOrder::builder()
         .ty(OrderType::Market)
         .symbol("tBTCUSD")
         .amount(0.1)
         .price(1000.)
+        .price_aux_limit(1111.)
         .build()
         .unwrap();
-    let r: RetrieveOrdersBySymbolResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: SubmitOrderResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = CancelOrder::builder().id(12345).build().unwrap();
-    let r: CancelOrderResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: CancelOrderResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 
     let endpoint = CancelOrders::builder()
-        .ids(vec![12345, 67890])
+        .cancel_orders_type(CancelOrdersType::All)
         .build()
         .unwrap();
-    let r: CancelOrdersResp = endpoint.query_async(&client).await.unwrap();
-    println!("{r:#?}");
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: CancelOrdersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
 }
