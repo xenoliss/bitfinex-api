@@ -42,7 +42,7 @@ pub struct CancelFundingOfferResp {
     pub ty: String,
     pub message_id: u64,
     pub offer: FundingOffer,
-    pub code: Option<u64>,
+    pub code: u64,
     pub status: String,
     pub text: String,
 }
@@ -53,15 +53,7 @@ impl<'de> Deserialize<'de> for CancelFundingOfferResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct CancelFundingOfferRawResp(
-            u64,
-            String,
-            u64,
-            FundingOfferRaw,
-            Option<u64>,
-            String,
-            String,
-        );
+        struct CancelFundingOfferRawResp(u64, String, u64, FundingOfferRaw, u64, String, String);
 
         impl From<CancelFundingOfferRawResp> for CancelFundingOfferResp {
             fn from(value: CancelFundingOfferRawResp) -> Self {

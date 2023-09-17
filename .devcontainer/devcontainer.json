@@ -6,7 +6,14 @@
     "image": "mcr.microsoft.com/devcontainers/rust:1-1-bullseye",
     "runArgs": [
         "--name=bitfinex-rs"
-    ]
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"eamodio.gitlens"
+			]
+		}
+	}
     // Use 'mounts' to make the cargo cache persistent in a Docker Volume.
     // "mounts": [
     // 	{

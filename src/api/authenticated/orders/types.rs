@@ -22,7 +22,7 @@ pub enum OrderType {
 #[derive(Debug, Clone)]
 pub struct Order {
     pub id: u64,
-    pub gid: u64,
+    pub gid: Option<u64>,
     pub cid: u64,
     pub symbol: String,
     pub mts_created: u64,
@@ -31,8 +31,8 @@ pub struct Order {
     pub amount_orig: f64,
     pub order_type: OrderType,
     pub type_prev: OrderType,
-    pub mts_tif: u64,
-    pub flags: u64,
+    pub mts_tif: Option<u64>,
+    pub flags: Option<u64>,
     pub status: String,
     pub price: f64,
     pub price_avg: f64,
@@ -40,7 +40,7 @@ pub struct Order {
     pub price_aux_limit: f64,
     pub notify: bool,
     pub hidden: bool,
-    pub placed_id: u64,
+    pub placed_id: Option<u64>,
     pub routing: String,
 }
 
@@ -57,7 +57,7 @@ impl<'de> Deserialize<'de> for Order {
 #[derive(Debug, Deserialize)]
 pub struct OrderRaw(
     u64,
-    u64,
+    Option<u64>,
     u64,
     String,
     u64,
@@ -66,9 +66,9 @@ pub struct OrderRaw(
     f64,
     OrderType,
     OrderType,
-    u64,
+    Option<u64>,
     Option<()>,
-    u64,
+    Option<u64>,
     String,
     Option<()>,
     Option<()>,
@@ -81,7 +81,7 @@ pub struct OrderRaw(
     Option<()>,
     u8,
     u8,
-    u64,
+    Option<u64>,
     Option<()>,
     Option<()>,
     String,
