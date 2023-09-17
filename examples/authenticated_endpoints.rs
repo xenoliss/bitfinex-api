@@ -1,7 +1,7 @@
 use bitfinex_rs::{
     api::{
         authenticated::{
-            fundings::{
+            funding::{
                 active_funding_offers::{ActiveFundingOffers, ActiveFundingOffersResp},
                 cancel_all_funding_offers::{CancelAllFundingOffers, CancelAllFundingOffersResp},
                 cancel_funding_offer::{CancelFundingOffer, CancelFundingOfferResp},
