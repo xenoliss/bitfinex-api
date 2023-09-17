@@ -302,12 +302,22 @@ Feel free to dig in the individual endpoints source code (in the `api/public` an
     - Endpoint `Wallets`
     - Return `WalletsResp`
 
-- :black_square_button: [Retrieve Orders](https://docs.bitfinex.com/reference/rest-auth-retrieve-orders)
-- :black_square_button: [Retrieve Orders (by symbol)](https://docs.bitfinex.com/reference/rest-auth-retrieve-orders-by-symbol)
-- :black_square_button: [Submit Order](https://docs.bitfinex.com/reference/rest-auth-submit-order)
+- :white_check_mark: [Retrieve Orders](https://docs.bitfinex.com/reference/rest-auth-retrieve-orders)
+    - Endpoint `RetrieveOrders`
+    - Return `RetrieveOrdersResp`
+- :white_check_mark: [Retrieve Orders (by symbol)](https://docs.bitfinex.com/reference/rest-auth-retrieve-orders-by-symbol)
+    - Endpoint `RetrieveOrdersBySymbol`
+    - Return `RetrieveOrdersBySymbolResp`
+- :white_check_mark: [Submit Order](https://docs.bitfinex.com/reference/rest-auth-submit-order)
+    - Endpoint `SubmitOrder`
+    - Return `SubmitOrderResp`
 - :black_square_button: [Update Order](https://docs.bitfinex.com/reference/rest-auth-update-order)
-- :black_square_button: [Cancel Order](https://docs.bitfinex.com/reference/rest-auth-cancel-order)
-- :black_square_button: [Cancel Orders (multiple)](https://docs.bitfinex.com/reference/rest-auth-cancel-orders-multiple)
+- :white_check_mark: [Cancel Order](https://docs.bitfinex.com/reference/rest-auth-cancel-order)
+    - Endpoint `CancelOrder`
+    - Return `CancelOrderResp`
+- :white_check_mark: [Cancel Orders (multiple)](https://docs.bitfinex.com/reference/rest-auth-cancel-orders-multiple)
+    - Endpoint `CancelOrders`
+    - Return `CancelOrdersResp`
 - :black_square_button: [Order Multi-OP](https://docs.bitfinex.com/reference/rest-auth-order-multi)
 - :black_square_button: [Orders History](https://docs.bitfinex.com/reference/rest-auth-orders-history)
 - :black_square_button: [Orders History (by symbol)](https://docs.bitfinex.com/reference/rest-auth-orders-history-by-symbol)
