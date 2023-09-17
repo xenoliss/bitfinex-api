@@ -20,7 +20,9 @@ pub trait Endpoint {
     fn endpoint(&self) -> String;
 
     /// Whether this endpoint needs authorization.
-    fn is_authenticated(&self) -> bool;
+    fn is_authenticated(&self) -> bool {
+        false
+    }
 
     /// Query parameters for the endpoint.
     fn parameters(&self) -> QueryParams {

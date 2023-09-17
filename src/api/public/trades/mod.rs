@@ -33,10 +33,6 @@ impl<'a> Endpoint for Trades<'a> {
         format!("v2/trades/{}/hist", self.symbol)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

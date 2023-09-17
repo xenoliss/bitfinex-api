@@ -23,10 +23,6 @@ impl<'a> Endpoint for Ticker<'a> {
     fn endpoint(&self) -> String {
         format!("v2/ticker/{}", self.symbol)
     }
-
-    fn is_authenticated(&self) -> bool {
-        false
-    }
 }
 
 #[derive(Debug)]

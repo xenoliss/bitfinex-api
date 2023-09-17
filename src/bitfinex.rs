@@ -152,7 +152,7 @@ impl Client for Bitfinex {
         path_to_sign: Option<String>,
     ) -> Result<Response<Bytes>, ApiError<Self::Error>> {
         let call = || {
-            // If a path to signe has been provided, compute and adds the necessary authorization headers to the request.
+            // If a path to sign has been provided, compute and adds the necessary authorization headers to the request.
             if let (Some(path_to_sign), Some(auth)) = (path_to_sign, &self.auth) {
                 auth.set_headers(request_builder.headers_mut().unwrap(), &path_to_sign, &body);
             }
@@ -193,7 +193,7 @@ impl AsyncClient for AsyncBitfinex {
         path_to_sign: Option<String>,
     ) -> Result<Response<Bytes>, ApiError<<Self as RestClient>::Error>> {
         let call = || async {
-            // If a path to signe has been provided, compute and adds the necessary authorization headers to the request.
+            // If a path to sign has been provided, compute and adds the necessary authorization headers to the request.
             if let (Some(path_to_sign), Some(auth)) = (path_to_sign, &self.auth) {
                 auth.set_headers(request_builder.headers_mut().unwrap(), &path_to_sign, &body);
             }

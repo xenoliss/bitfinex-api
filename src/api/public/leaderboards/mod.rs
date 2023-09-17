@@ -64,10 +64,6 @@ impl<'a> Endpoint for Leaderboards<'a> {
         )
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

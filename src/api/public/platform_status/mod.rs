@@ -21,10 +21,6 @@ impl Endpoint for PlatformStatus {
     fn endpoint(&self) -> String {
         String::from("v2/platform/status")
     }
-
-    fn is_authenticated(&self) -> bool {
-        false
-    }
 }
 
 #[derive(Debug)]

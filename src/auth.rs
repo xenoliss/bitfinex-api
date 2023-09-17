@@ -18,7 +18,7 @@ impl Auth {
         }
     }
 
-    /// Adds the appropriate header to a set of headers to perform authenticated calls.
+    /// Adds the appropriate headers to perform authenticated calls.
     pub fn set_headers(&self, headers: &mut HeaderMap<HeaderValue>, path: &str, body: &[u8]) {
         let nonce = self.generate_nonce();
         let signature_payload = format!("/api/{path}{nonce}{}", std::str::from_utf8(body).unwrap());

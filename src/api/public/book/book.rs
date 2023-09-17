@@ -52,10 +52,6 @@ impl<'a> Endpoint for Book<'a> {
         format!("v2/book/{}/{}", self.symbol, self.precision)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params.push_opt("len", self.len.map(|len| len as u8));

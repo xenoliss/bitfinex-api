@@ -86,10 +86,6 @@ impl<'a> Endpoint for Candles<'a> {
         format!("v2/candles/{}/{}", self.candles, self.section)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

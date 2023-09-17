@@ -32,10 +32,6 @@ impl Endpoint for Liquidations {
         String::from("v2/liquidations/hist")
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

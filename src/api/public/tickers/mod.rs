@@ -24,10 +24,6 @@ impl<'a> Endpoint for Tickers<'a> {
         String::from("v2/tickers")
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params.push("symbols", self.symbols.as_query_string());

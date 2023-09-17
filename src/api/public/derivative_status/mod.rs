@@ -24,10 +24,6 @@ impl<'a> Endpoint for DerivativesStatus<'a> {
         String::from("v2/status/deriv")
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params.push("keys", self.keys.as_query_string());

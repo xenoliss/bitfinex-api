@@ -114,12 +114,7 @@ impl Endpoint for Liquidations {
     // Give the endpoint path.
     fn endpoint(&self) -> String {
         String::from("v2/liquidations/hist")
-    }
-
-    // No authentication is required as this is a public endpoint.
-    fn is_authenticated(&self) -> bool {
-        false
-    }
+    }   
 
     // Provide the query parameters associated with this endpoint.
     fn parameters(&self) -> QueryParams {

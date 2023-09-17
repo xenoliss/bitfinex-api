@@ -33,10 +33,6 @@ impl<'a> Endpoint for DerivativesStatusHistory<'a> {
         format!("v2/status/deriv/{}/hist", self.key)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

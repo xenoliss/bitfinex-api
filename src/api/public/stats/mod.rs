@@ -101,10 +101,6 @@ impl<'a> Endpoint for Stats<'a> {
         format!("v2/stats1/{}/{}", self.key_args, self.section)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

@@ -31,10 +31,6 @@ impl<'a> Endpoint for TickersHistory<'a> {
         "v2/tickers/hist".into()
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params

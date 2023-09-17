@@ -31,10 +31,6 @@ impl<'a> Endpoint for FundingStatistics<'a> {
         format!("v2/funding/stats/{}/hist", self.symbol)
     }
 
-    fn is_authenticated(&self) -> bool {
-        false
-    }
-
     fn parameters(&self) -> QueryParams {
         let mut params = QueryParams::default();
         params
