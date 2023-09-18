@@ -21,7 +21,7 @@ The library provides the necessary building blocks to interact with the Bitfinex
 
 - The `Endpoint` trait can be implemented on your types to turn them into actual endpoints that your application needs to interact with. Not all the endpoints are currently implemented but it's really easy to add new ones or adapt existing ones to fit your exact needs.
 
-- The `AsyncQuery` / `Query` traits are implemented on all types that implement `Endpoint` and expose the `query` / `query_async` methods in which the `Client` / `AsyncClient` are injected to perform the requests.
+- The `Query` / `AsyncQuery` traits are implemented on all types that implement `Endpoint` and expose the `query` / `query_async` methods in which the `Client` / `AsyncClient` are injected to perform the requests.
 
 Here is an example of querying the [Ticker](https://docs.bitfinex.com/reference/rest-public-ticker) endpoint using the default implementations provided by the lib:
 
@@ -67,7 +67,7 @@ async fn main() {
 }
 ```
 
-That's it ! That's the same pattern for all the endpoints that are implemented in the lib.
+That's it ! That's the same pattern for all the endpoints that are implemented in the lib. Check out the [examples](https://github.com/xenoliss/bitfinex-rs/tree/main/examples) directory for more info.
 
 ## Advanced Usage
 
@@ -237,7 +237,7 @@ async fn main() {
 }
 ```
 
-Feel free to dig in the individual endpoints source code (in the `api/public` and `api/authenticated` folders) to see how the implementations vary depending on the endpoint path, query and body parameters.
+Feel free to dig in the individual endpoints source code (in the [`api/public`](https://github.com/xenoliss/bitfinex-rs/tree/main/src/api/public) and [`api/authenticated`](https://github.com/xenoliss/bitfinex-rs/tree/main/src/api/authenticated) directories) to see how the implementations vary depending on the endpoint path, query and body parameters.
 
 ## Implemented Endpoints
 
