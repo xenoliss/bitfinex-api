@@ -1,4 +1,20 @@
 use serde::Deserialize;
+use serde_repr::Deserialize_repr;
+
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum RateType {
+    Fixed,
+    Var,
+}
+
+#[derive(Debug, Clone, Copy, Deserialize_repr)]
+#[repr(i8)]
+pub enum LoanSide {
+    Borrower = -1,
+    Both = 0,
+    Lender = 1,
+}
 
 #[derive(Debug)]
 pub struct FundingOffer {

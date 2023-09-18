@@ -352,12 +352,18 @@ Feel free to dig in the individual endpoints source code (in the `api/public` an
 - :black_square_button: [Funding Auto-renew](https://docs.bitfinex.com/reference/rest-auth-funding-auto-renew)
 - :black_square_button: [Keep Funding](https://docs.bitfinex.com/reference/rest-auth-keep-funding)
 - :black_square_button: [Funding Offers History](https://docs.bitfinex.com/reference/rest-auth-funding-offers-hist)
-- :black_square_button: [Funding Loans](https://docs.bitfinex.com/reference/rest-auth-funding-loans)
+- :white_check_mark: [Funding Loans](https://docs.bitfinex.com/reference/rest-auth-funding-loans)
+    - Endpoint `FundingLoans`
+    - Return `FundingLoansResp`
 - :black_square_button: [Funding Loans History](https://docs.bitfinex.com/reference/rest-auth-funding-loans-hist)
-- :black_square_button: [Funding Credits](https://docs.bitfinex.com/reference/rest-auth-funding-credits)
+- :white_check_mark: [Funding Credits](https://docs.bitfinex.com/reference/rest-auth-funding-credits)
+    - Endpoint `FundingCredits`
+    - Return `FundingCreditsResp`
 - :black_square_button: [Funding Credits History](https://docs.bitfinex.com/reference/rest-auth-funding-credits-hist)
 - :black_square_button: [Funding Trades](https://docs.bitfinex.com/reference/rest-auth-funding-trades-hist)
-- :black_square_button: [Funding Info](https://docs.bitfinex.com/reference/rest-auth-info-funding)
+- :white_check_mark: [Funding Info](https://docs.bitfinex.com/reference/rest-auth-info-funding)
+    - Endpoint `FundingInfo`
+    - Return `FundingInfoResp`
 - :black_square_button: [User Info](https://docs.bitfinex.com/reference/rest-auth-info-user)
 - :black_square_button: [Summary](https://docs.bitfinex.com/reference/rest-auth-summary)
 - :black_square_button: [Login History](https://docs.bitfinex.com/reference/rest-auth-logins-hist)

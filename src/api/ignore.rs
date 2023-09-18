@@ -97,28 +97,28 @@ where
             (request_builder, Vec::new())
         };
 
-        // // Send off the request
-        // let rsp = client
-        //     .rest_async(request_builder, data, is_authenicated.then_some(endpoint))
-        //     .await?;
+        // Send off the request
+        let rsp = client
+            .rest_async(request_builder, data, is_authenicated.then_some(endpoint))
+            .await?;
 
-        // // Check the response status and extract errors if needed.
-        // let status = rsp.status();
+        // Check the response status and extract errors if needed.
+        let status = rsp.status();
 
-        // if !status.is_success() {
-        //     // For debug purposes try to deseralize the error.
-        //     let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {
-        //         status,
-        //         source: ServerError::InvalidJson {
-        //             data: rsp.body().into_iter().copied().collect(),
-        //         },
-        //     })?;
+        if !status.is_success() {
+            // For debug purposes try to deseralize the error.
+            let v = serde_json::from_slice(rsp.body()).map_err(|_e| ApiError::ServerError {
+                status,
+                source: ServerError::InvalidJson {
+                    data: rsp.body().into_iter().copied().collect(),
+                },
+            })?;
 
-        //     return Err(ApiError::ServerError {
-        //         status,
-        //         source: ServerError::NotSuccess { obj: v },
-        //     });
-        // }
+            return Err(ApiError::ServerError {
+                status,
+                source: ServerError::NotSuccess { obj: v },
+            });
+        }
 
         // Skip the deserialization process.
         Ok(())

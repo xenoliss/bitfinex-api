@@ -5,6 +5,9 @@ use bitfinex_rs::{
                 active_funding_offers::{ActiveFundingOffers, ActiveFundingOffersResp},
                 cancel_all_funding_offers::{CancelAllFundingOffers, CancelAllFundingOffersResp},
                 cancel_funding_offer::{CancelFundingOffer, CancelFundingOfferResp},
+                funding_credits::{FundingCredits, FundingCreditsResp},
+                funding_info::{FundingInfo, FundingInfoResp},
+                funding_loans::{FundingLoans, FundingLoansResp},
                 submit_funding_offer::{
                     FundingOrderType, SubmitFundingOffer, SubmitFundingOfferResp,
                 },
@@ -60,6 +63,21 @@ async fn main() {
         .unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();
     // let r: ActiveFundingOffersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = FundingLoans::builder().symbol("fUSD").build().unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: FundingLoansResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = FundingCredits::builder().symbol("fUSD").build().unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: FundingCreditsResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = FundingInfo::builder().symbol("fUSD").build().unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: FundingInfoResp = endpoint.query_async(&client).await.unwrap();
     // println!("{r:#?}");
 
     let endpoint = CancelFundingOffer::builder().id(12345).build().unwrap();
