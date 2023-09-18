@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_repr::Deserialize_repr;
 
 #[derive(Debug, Clone, Copy, Deserialize)]
@@ -16,6 +16,14 @@ pub enum LoanSide {
     Lender = 1,
 }
 
+#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[serde(rename_all = "UPPERCASE")]
+pub enum FundingOfferType {
+    Limit,
+    FrrDeltaFix,
+    FrrDeltaVar,
+}
+
 #[derive(Debug)]
 pub struct FundingOffer {
     pub id: u64,
@@ -24,7 +32,7 @@ pub struct FundingOffer {
     pub mts_updated: u64,
     pub amount: f64,
     pub amount_orig: f64,
-    pub offer_type: String,
+    pub offer_type: FundingOfferType,
     pub flags: u64,
     pub offer_status: String,
     pub rate: f64,
@@ -52,7 +60,7 @@ pub struct FundingOfferRaw(
     u64,
     f64,
     f64,
-    String,
+    FundingOfferType,
     Option<()>,
     Option<()>,
     u64,

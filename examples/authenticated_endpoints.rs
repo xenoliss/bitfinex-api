@@ -8,9 +8,8 @@ use bitfinex_rs::{
                 funding_credits::{FundingCredits, FundingCreditsResp},
                 funding_info::{FundingInfo, FundingInfoResp},
                 funding_loans::{FundingLoans, FundingLoansResp},
-                submit_funding_offer::{
-                    FundingOrderType, SubmitFundingOffer, SubmitFundingOfferResp,
-                },
+                submit_funding_offer::{SubmitFundingOffer, SubmitFundingOfferResp},
+                types::FundingOfferType,
             },
             orders::{
                 cancel_order::{CancelOrder, CancelOrderResp},
@@ -38,7 +37,7 @@ async fn main() {
     // println!("{r:#?}");
 
     let endpoint = SubmitFundingOffer::builder()
-        .ty(FundingOrderType::Limit)
+        .ty(FundingOfferType::Limit)
         .symbol("fUSD")
         .amount(150.)
         .rate(0.009)

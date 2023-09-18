@@ -5,19 +5,11 @@ use serde_with::serde_as;
 
 use crate::api::endpoint::Endpoint;
 
-use super::types::{FundingOffer, FundingOfferRaw};
-
-#[derive(Debug, Clone, Copy, Serialize)]
-#[serde(rename_all = "UPPERCASE")]
-pub enum FundingOrderType {
-    Limit,
-    FrrDeltaFix,
-    FrrDeltaVar,
-}
+use super::types::{FundingOffer, FundingOfferRaw, FundingOfferType};
 
 #[derive(Debug, Clone, Copy, Builder)]
 pub struct SubmitFundingOffer<'a> {
-    ty: FundingOrderType,
+    ty: FundingOfferType,
     symbol: &'a str,
     amount: f64,
     rate: f64,
@@ -34,12 +26,13 @@ impl<'a> SubmitFundingOffer<'a> {
         #[derive(Debug, Serialize)]
         pub struct JsonParams<'a> {
             #[serde(rename(serialize = "type"))]
-            ty: FundingOrderType,
+            ty: FundingOfferType,
             symbol: &'a str,
             #[serde_as(as = "serde_with::DisplayFromStr")]
             amount: f64,
             #[serde_as(as = "serde_with::DisplayFromStr")]
             rate: f64,
+            period: u8,
         }
 
         let p = JsonParams {
@@ -47,6 +40,7 @@ impl<'a> SubmitFundingOffer<'a> {
             symbol: self.symbol,
             amount: self.amount,
             rate: self.rate,
+            period: self.period,
         };
 
         serde_json::to_string(&p).unwrap()
