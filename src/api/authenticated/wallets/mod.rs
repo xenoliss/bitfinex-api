@@ -1,12 +1,18 @@
 use derive_builder::Builder;
 use http::Method;
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use serde::Deserialize;
 
 use crate::api::endpoint::Endpoint;
 
-#[serde_as]
-#[derive(Debug, Clone, Copy, Builder, Serialize)]
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum WalletType {
+    Exchange,
+    Margin,
+    Funding,
+}
+
+#[derive(Debug, Clone, Copy, Builder)]
 pub struct Wallets {}
 
 impl Wallets {
@@ -33,7 +39,7 @@ pub type WalletsResp = Vec<WalletResp>;
 
 #[derive(Debug)]
 pub struct WalletResp {
-    pub ty: String,
+    pub ty: WalletType,
     pub currency: String,
     pub balance: f64,
     pub unsettled_interest: f64,
@@ -49,7 +55,7 @@ impl<'de> Deserialize<'de> for WalletResp {
     {
         #[derive(Debug, Deserialize)]
         struct WalletRawResp(
-            String,
+            WalletType,
             String,
             f64,
             f64,
