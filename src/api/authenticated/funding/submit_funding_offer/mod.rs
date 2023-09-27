@@ -69,9 +69,9 @@ impl<'a> Endpoint for SubmitFundingOffer<'a> {
 pub struct SubmitFundingOfferResp {
     pub mts: u64,
     pub ty: String,
-    pub message_id: u64,
+    pub message_id: Option<u64>,
     pub offer: FundingOffer,
-    pub code: u64,
+    pub code: Option<u64>,
     pub status: String,
     pub text: String,
 }
@@ -82,11 +82,20 @@ impl<'de> Deserialize<'de> for SubmitFundingOfferResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct SubmitFundingOfferRawResp(u64, String, u64, FundingOfferRaw, u64, String, String);
+        struct SubmitFundingOfferRawResp(
+            u64,
+            String,
+            Option<u64>,
+            Option<()>,
+            FundingOfferRaw,
+            Option<u64>,
+            String,
+            String,
+        );
 
         impl From<SubmitFundingOfferRawResp> for SubmitFundingOfferResp {
             fn from(value: SubmitFundingOfferRawResp) -> Self {
-                let SubmitFundingOfferRawResp(mts, ty, message_id, offer, code, status, text) =
+                let SubmitFundingOfferRawResp(mts, ty, message_id, _, offer, code, status, text) =
                     value;
 
                 Self {

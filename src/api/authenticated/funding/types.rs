@@ -33,7 +33,7 @@ pub struct FundingOffer {
     pub amount: f64,
     pub amount_orig: f64,
     pub offer_type: FundingOfferType,
-    pub flags: u64,
+    pub flags: Option<u64>,
     pub offer_status: String,
     pub rate: f64,
     pub period: u8,
@@ -53,6 +53,13 @@ impl<'de> Deserialize<'de> for FundingOffer {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(untagged)]
+enum BoolOrU8 {
+    Bool(bool),
+    U8(u8),
+}
+
+#[derive(Debug, Deserialize)]
 pub struct FundingOfferRaw(
     u64,
     String,
@@ -63,17 +70,18 @@ pub struct FundingOfferRaw(
     FundingOfferType,
     Option<()>,
     Option<()>,
-    u64,
+    Option<u64>,
     String,
     Option<()>,
     Option<()>,
     Option<()>,
     f64,
     u8,
-    u8,
-    u8,
+    BoolOrU8,
+    BoolOrU8,
     Option<()>,
-    u8,
+    BoolOrU8,
+    Option<()>,
 );
 
 impl From<FundingOfferRaw> for FundingOffer {
@@ -99,6 +107,7 @@ impl From<FundingOfferRaw> for FundingOffer {
             hidden,
             _,
             renew,
+            _,
         ) = value;
 
         Self {
@@ -113,9 +122,18 @@ impl From<FundingOfferRaw> for FundingOffer {
             offer_status,
             rate,
             period,
-            notify: notify == 1,
-            hidden: hidden == 1,
-            renew: renew == 1,
+            notify: match notify {
+                BoolOrU8::Bool(notify) => notify,
+                BoolOrU8::U8(notify) => notify == 1,
+            },
+            hidden: match hidden {
+                BoolOrU8::Bool(hidden) => hidden,
+                BoolOrU8::U8(hidden) => hidden == 1,
+            },
+            renew: match renew {
+                BoolOrU8::Bool(renew) => renew,
+                BoolOrU8::U8(renew) => renew == 1,
+            },
         }
     }
 }
