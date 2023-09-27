@@ -2,7 +2,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{common::Symbols, endpoint::Endpoint, params::QueryParams};
+use crate::api::{
+    common::{PlaceHolder, Symbols},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Builder)]
 pub struct Tickers<'a> {
@@ -91,8 +95,8 @@ impl<'de> Deserialize<'de> for TickerResp {
                 f64,
                 f64,
                 f64,
-                Option<()>,
-                Option<()>,
+                PlaceHolder,
+                PlaceHolder,
                 f64,
             ),
         }

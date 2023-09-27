@@ -2,7 +2,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{common::Symbols, endpoint::Endpoint, params::QueryParams};
+use crate::api::{
+    common::{PlaceHolder, Symbols},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Builder)]
 pub struct DerivativesStatus<'a> {
@@ -59,26 +63,26 @@ impl<'de> Deserialize<'de> for DerivativeStatusResp {
         struct DerivativeStatusRawResp(
             String,
             u64,
-            Option<()>,
+            PlaceHolder,
             f64,
             f64,
-            Option<()>,
+            PlaceHolder,
             f64,
-            Option<()>,
+            PlaceHolder,
             u64,
             f64,
             u64,
-            Option<()>,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
             f64,
             f64,
         );

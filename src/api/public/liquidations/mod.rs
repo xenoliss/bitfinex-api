@@ -2,7 +2,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{common::Sort, endpoint::Endpoint, params::QueryParams};
+use crate::api::{
+    common::{PlaceHolder, Sort},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
@@ -67,14 +71,14 @@ impl<'de> Deserialize<'de> for LiquidationResp {
             String,
             u64,
             u64,
-            Option<()>,
+            PlaceHolder,
             String,
             f64,
             f64,
-            Option<()>,
+            PlaceHolder,
             u8,
             u8,
-            Option<()>,
+            PlaceHolder,
             Option<f64>,
         );
 

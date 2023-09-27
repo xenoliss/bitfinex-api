@@ -2,7 +2,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{common::Sort, endpoint::Endpoint, params::QueryParams};
+use crate::api::{
+    common::{PlaceHolder, Sort},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Builder)]
 #[builder(setter(strip_option))]
@@ -70,26 +74,26 @@ impl<'de> Deserialize<'de> for DerivativeStatusHistoryResp {
         #[derive(Debug, Deserialize)]
         struct DerivativeStatusHistoryRawResp(
             u64,
-            Option<()>,
+            PlaceHolder,
             f64,
             f64,
-            Option<()>,
+            PlaceHolder,
             f64,
-            Option<()>,
+            PlaceHolder,
             u64,
             f64,
             u64,
-            Option<()>,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
             f64,
             f64,
         );

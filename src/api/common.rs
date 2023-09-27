@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+pub type PlaceHolder = Option<()>;
+
 #[derive(Debug, Clone)]
 pub enum Symbols<'a> {
     All,

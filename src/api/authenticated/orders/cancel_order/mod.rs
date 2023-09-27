@@ -2,7 +2,7 @@ use derive_builder::Builder;
 use http::Method;
 use serde::{Deserialize, Serialize};
 
-use crate::api::{authenticated::orders::types::OrderRaw, endpoint::Endpoint};
+use crate::api::{authenticated::orders::types::OrderRaw, common::PlaceHolder, endpoint::Endpoint};
 
 use super::types::Order;
 
@@ -63,7 +63,7 @@ impl<'de> Deserialize<'de> for CancelOrderResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct CancelOrderRawResp(u64, String, u64, Option<()>, OrderRaw, u64, String, String);
+        struct CancelOrderRawResp(u64, String, u64, PlaceHolder, OrderRaw, u64, String, String);
 
         impl From<CancelOrderRawResp> for CancelOrderResp {
             fn from(value: CancelOrderRawResp) -> Self {

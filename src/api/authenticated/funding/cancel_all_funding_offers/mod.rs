@@ -2,7 +2,7 @@ use derive_builder::Builder;
 use http::Method;
 use serde::{Deserialize, Serialize};
 
-use crate::api::endpoint::Endpoint;
+use crate::api::{common::PlaceHolder, endpoint::Endpoint};
 
 #[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
@@ -65,10 +65,10 @@ impl<'de> Deserialize<'de> for CancelAllFundingOffersResp {
         struct CancelAllFundingOffersRawResp(
             u64,
             String,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
             String,
             String,
         );

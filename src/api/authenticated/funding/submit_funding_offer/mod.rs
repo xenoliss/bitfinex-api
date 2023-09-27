@@ -3,7 +3,7 @@ use http::Method;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::api::endpoint::Endpoint;
+use crate::api::{common::PlaceHolder, endpoint::Endpoint};
 
 use super::types::{FundingOffer, FundingOfferRaw, FundingOfferType};
 
@@ -86,7 +86,7 @@ impl<'de> Deserialize<'de> for SubmitFundingOfferResp {
             u64,
             String,
             Option<u64>,
-            Option<()>,
+            PlaceHolder,
             FundingOfferRaw,
             Option<u64>,
             String,

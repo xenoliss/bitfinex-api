@@ -2,7 +2,7 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{endpoint::Endpoint, params::QueryParams};
+use crate::api::{common::PlaceHolder, endpoint::Endpoint, params::QueryParams};
 
 #[derive(Debug, Clone, Copy, Builder)]
 #[builder(setter(strip_option))]
@@ -61,16 +61,16 @@ impl<'de> Deserialize<'de> for FundingStatisticsRespItem {
         #[derive(Debug, Deserialize)]
         struct FundingStatisticsRawRespItem(
             u64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
             f64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
         );
 

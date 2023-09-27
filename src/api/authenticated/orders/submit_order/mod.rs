@@ -3,7 +3,7 @@ use http::Method;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 
-use crate::api::{authenticated::orders::types::OrderRaw, endpoint::Endpoint};
+use crate::api::{authenticated::orders::types::OrderRaw, common::PlaceHolder, endpoint::Endpoint};
 
 use super::types::{Order, OrderType};
 
@@ -123,7 +123,7 @@ impl<'de> Deserialize<'de> for SubmitOrderResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct SubmitOrderRawResp(u64, String, u64, Option<()>, OrderRaw, u64, String, String);
+        struct SubmitOrderRawResp(u64, String, u64, PlaceHolder, OrderRaw, u64, String, String);
 
         impl From<SubmitOrderRawResp> for SubmitOrderResp {
             fn from(value: SubmitOrderRawResp) -> Self {

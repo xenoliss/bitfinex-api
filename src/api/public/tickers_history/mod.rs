@@ -2,7 +2,11 @@ use derive_builder::Builder;
 use http::Method;
 use serde::Deserialize;
 
-use crate::api::{common::Symbols, endpoint::Endpoint, params::QueryParams};
+use crate::api::{
+    common::{PlaceHolder, Symbols},
+    endpoint::Endpoint,
+    params::QueryParams,
+};
 
 #[derive(Debug, Clone, Builder)]
 #[builder(setter(strip_option))]
@@ -61,16 +65,16 @@ impl<'de> Deserialize<'de> for TickerHistoryResp {
         struct TickerHistoryRawResp(
             String,
             f64,
-            Option<()>,
+            PlaceHolder,
             f64,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
             u64,
         );
 

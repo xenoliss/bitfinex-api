@@ -2,7 +2,7 @@ use derive_builder::Builder;
 use http::Method;
 use serde::{Deserialize, Serialize};
 
-use crate::api::{authenticated::orders::types::OrderRaw, endpoint::Endpoint};
+use crate::api::{authenticated::orders::types::OrderRaw, common::PlaceHolder, endpoint::Endpoint};
 
 use super::types::Order;
 
@@ -78,7 +78,7 @@ impl<'de> Deserialize<'de> for CancelOrdersResp {
             u64,
             String,
             u64,
-            Option<()>,
+            PlaceHolder,
             Vec<OrderRaw>,
             u64,
             String,

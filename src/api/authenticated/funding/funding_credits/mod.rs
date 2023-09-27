@@ -3,7 +3,7 @@ use http::Method;
 use serde::Deserialize;
 use serde_json::Value;
 
-use crate::api::endpoint::Endpoint;
+use crate::api::{common::PlaceHolder, endpoint::Endpoint};
 
 use super::types::{LoanSide, RateType};
 
@@ -71,17 +71,17 @@ impl<'de> Deserialize<'de> for FundingCreditResp {
             Option<Value>,
             String,
             RateType,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
             u8,
             u64,
             u64,
             Option<u8>,
             u8,
-            Option<()>,
+            PlaceHolder,
             u8,
-            Option<()>,
+            PlaceHolder,
             u8,
             String,
         );

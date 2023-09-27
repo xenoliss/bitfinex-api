@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::api::common::PlaceHolder;
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderType {
@@ -67,23 +69,23 @@ pub struct OrderRaw(
     OrderType,
     OrderType,
     Option<u64>,
-    Option<()>,
+    PlaceHolder,
     Option<u64>,
     String,
-    Option<()>,
-    Option<()>,
+    PlaceHolder,
+    PlaceHolder,
     f64,
     f64,
     f64,
     f64,
-    Option<()>,
-    Option<()>,
-    Option<()>,
+    PlaceHolder,
+    PlaceHolder,
+    PlaceHolder,
     u8,
     u8,
     Option<u64>,
-    Option<()>,
-    Option<()>,
+    PlaceHolder,
+    PlaceHolder,
     String,
 );
 

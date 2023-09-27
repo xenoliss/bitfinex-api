@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_repr::Deserialize_repr;
 
+use crate::api::common::PlaceHolder;
+
 #[derive(Debug, Clone, Copy, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum RateType {
@@ -68,20 +70,20 @@ pub struct FundingOfferRaw(
     f64,
     f64,
     FundingOfferType,
-    Option<()>,
-    Option<()>,
+    PlaceHolder,
+    PlaceHolder,
     Option<u64>,
     String,
-    Option<()>,
-    Option<()>,
-    Option<()>,
+    PlaceHolder,
+    PlaceHolder,
+    PlaceHolder,
     f64,
     u8,
     BoolOrU8,
     BoolOrU8,
-    Option<()>,
+    PlaceHolder,
     BoolOrU8,
-    Option<()>,
+    PlaceHolder,
 );
 
 impl From<FundingOfferRaw> for FundingOffer {

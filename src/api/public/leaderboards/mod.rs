@@ -5,7 +5,7 @@ use http::Method;
 use serde::Deserialize;
 
 use crate::api::{
-    common::{Section, Sort, TimeFrame},
+    common::{PlaceHolder, Section, Sort, TimeFrame},
     endpoint::Endpoint,
     params::QueryParams,
 };
@@ -94,17 +94,17 @@ impl<'de> Deserialize<'de> for LeaderBoardResp {
         #[derive(Debug, Deserialize)]
         struct LeaderBoardRawResp(
             u64,
-            Option<()>,
+            PlaceHolder,
             String,
             u64,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
             f64,
-            Option<()>,
+            PlaceHolder,
             Option<u64>,
-            Option<()>,
-            Option<()>,
-            Option<()>,
+            PlaceHolder,
+            PlaceHolder,
+            PlaceHolder,
             Option<u64>,
         );
 
