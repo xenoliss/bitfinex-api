@@ -8,12 +8,15 @@ use crate::api::{common::PlaceHolder, endpoint::Endpoint};
 use super::types::{FundingOffer, FundingOfferRaw, FundingOfferType};
 
 #[derive(Debug, Clone, Copy, Builder)]
+#[builder(setter(strip_option))]
 pub struct SubmitFundingOffer<'a> {
     ty: FundingOfferType,
     symbol: &'a str,
     amount: f64,
     rate: f64,
     period: u8,
+    #[builder(default)]
+    hidden: bool,
 }
 
 impl<'a> SubmitFundingOffer<'a> {
@@ -33,6 +36,7 @@ impl<'a> SubmitFundingOffer<'a> {
             #[serde_as(as = "serde_with::DisplayFromStr")]
             rate: f64,
             period: u8,
+            flags: u64,
         }
 
         let p = JsonParams {
@@ -41,6 +45,7 @@ impl<'a> SubmitFundingOffer<'a> {
             amount: self.amount,
             rate: self.rate,
             period: self.period,
+            flags: if self.hidden { 64 } else { 0 },
         };
 
         serde_json::to_string(&p).unwrap()

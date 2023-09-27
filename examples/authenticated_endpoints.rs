@@ -17,7 +17,7 @@ use bitfinex_rs::{
                 retrieve_orders::{RetrieveOrders, RetrieveOrdersResp},
                 retrieve_orders_by_symbol::{RetrieveOrdersBySymbol, RetrieveOrdersBySymbolResp},
                 submit_order::{SubmitOrder, SubmitOrderResp},
-                types::OrderType,
+                types::{OrderFlag, OrderType},
             },
             wallets::{Wallets, WalletsResp},
         },
@@ -42,6 +42,7 @@ async fn main() {
         .amount(150.)
         .rate(0.009)
         .period(2)
+        .hidden(true)
         .build()
         .unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();
@@ -103,6 +104,7 @@ async fn main() {
         .amount(0.1)
         .price(1000.)
         .price_aux_limit(1111.)
+        .flags(vec![OrderFlag::Hidden, OrderFlag::PostOnly])
         .build()
         .unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();

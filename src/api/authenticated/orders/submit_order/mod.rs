@@ -5,7 +5,7 @@ use serde_with::serde_as;
 
 use crate::api::{authenticated::orders::types::OrderRaw, common::PlaceHolder, endpoint::Endpoint};
 
-use super::types::{Order, OrderType};
+use super::types::{Order, OrderFlag, OrderType};
 
 #[derive(Debug, Builder)]
 #[builder(setter(strip_option))]
@@ -27,7 +27,7 @@ pub struct SubmitOrder<'a> {
     #[builder(default)]
     cid: Option<u64>,
     #[builder(default)]
-    flags: Option<u64>,
+    flags: Option<Vec<OrderFlag>>,
     #[builder(default)]
     tif: Option<&'a str>,
 }
@@ -69,6 +69,11 @@ impl<'a> SubmitOrder<'a> {
             tif: &'a Option<&'a str>,
         }
 
+        let flags = self
+            .flags
+            .as_ref()
+            .map(|flags| flags.iter().fold(0, |sum, flag| sum + *flag as u64));
+
         let p = JsonParams {
             ty: self.ty,
             symbol: self.symbol,
@@ -80,7 +85,7 @@ impl<'a> SubmitOrder<'a> {
             price_oco_stop: self.price_oco_stop,
             gid: self.gid,
             cid: self.cid,
-            flags: self.flags,
+            flags,
             tif: &self.tif,
         };
 
