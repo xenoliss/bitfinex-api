@@ -1,4 +1,4 @@
-use bitfinex_rs::{
+use bitfinex_api::{
     api::{
         authenticated::{
             funding::{

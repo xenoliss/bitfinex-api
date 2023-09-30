@@ -1,5 +1,5 @@
 [package]
-name = "bitfinex-rs"
+name = "bitfinex-api"
 version = "0.1.0"
 edition = "2021"
 

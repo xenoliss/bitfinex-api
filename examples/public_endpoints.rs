@@ -1,4 +1,4 @@
-use bitfinex_rs::{
+use bitfinex_api::{
     api::{
         common::{Section, Symbols, TimeFrame},
         public::{

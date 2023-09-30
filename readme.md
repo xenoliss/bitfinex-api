@@ -1,4 +1,4 @@
-# bitfinex-rs
+# bitfinex-api
 
 Another unofficial Rust Library for the [Bitfinex API V2](https://docs.bitfinex.com/docs#).
 
@@ -9,7 +9,7 @@ Add the lib as a project dependency in you `Cargo.toml`.
 
 ```
 [dependencies]
-bitfinex-rs = { git = "https://github.com/xenoliss/bitfinex-rs" }
+bitfinex-api = { git = "https://github.com/xenoliss/bitfinex-api" }
 ```
 
 
