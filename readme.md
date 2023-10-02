@@ -38,7 +38,7 @@ async fn main() {
     // 3. Perform the query against the endpoint.
     // NOTE: The returned type needs to be explicitly set by the caller. This is intended as it allows
     // for a greater flexibility for the lib user. Default returned types (like here with the `PlatformStatusResp`)
-    // cna be used when they are implemented.
+    // can be used when they are implemented.
     let r: PlatformStatusResp = endpoint.query_async(&client).await.unwrap();
 }
 
@@ -380,7 +380,9 @@ Feel free to dig in the individual endpoints source code (in the [`api/public`](
 - :black_square_button: [Alert List](https://docs.bitfinex.com/reference/rest-auth-alerts)
 - :black_square_button: [Alert Set](https://docs.bitfinex.com/reference/rest-auth-alert-set)
 - :black_square_button: [Alert Delete](https://docs.bitfinex.com/reference/rest-auth-alert-del)
-- :black_square_button: [Balance Available for Orders/Offers](https://docs.bitfinex.com/reference/rest-auth-calc-order-avail)
+- :white_check_mark: [Balance Available for Orders/Offers](https://docs.bitfinex.com/reference/rest-auth-calc-order-avail)
+    - Endpoint `BalanceAvailable`
+    - Return `BalanceAvailableResp`
 - :black_square_button: [User Settings Write](https://docs.bitfinex.com/reference/rest-auth-settings-set)
 - :black_square_button: [User Settings Read](https://docs.bitfinex.com/reference/rest-auth-settings)
 - :black_square_button: [User Settings Delete](https://docs.bitfinex.com/reference/rest-auth-settings-del)

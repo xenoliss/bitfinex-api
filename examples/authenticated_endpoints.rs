@@ -1,6 +1,7 @@
 use bitfinex_api::{
     api::{
         authenticated::{
+            account::balance_available::{BalanceAvailable, BalanceAvailableResp, BalanceType},
             funding::{
                 active_funding_offers::{ActiveFundingOffers, ActiveFundingOffersResp},
                 cancel_all_funding_offers::{CancelAllFundingOffers, CancelAllFundingOffersResp},
@@ -34,6 +35,15 @@ async fn main() {
     let endpoint = Wallets::builder().build().unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();
     // let r: WalletsResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = BalanceAvailable::builder()
+        .symbol("fUSD")
+        .ty(BalanceType::Funding)
+        .build()
+        .unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: BalanceAvailableResp = endpoint.query_async(&client).await.unwrap();
     // println!("{r:#?}");
 
     let endpoint = SubmitFundingOffer::builder()
