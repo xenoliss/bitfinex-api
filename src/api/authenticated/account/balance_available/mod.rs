@@ -103,7 +103,10 @@ impl<'de> Deserialize<'de> for BalanceAvailableResp {
             fn from(value: BalanceAvailableRespRaw) -> Self {
                 let BalanceAvailableRespRaw(amount_avail) = value;
 
-                Self { amount_avail }
+                // NOTE: For some reason the API returns the value as negative.
+                Self {
+                    amount_avail: -amount_avail,
+                }
             }
         }
 
