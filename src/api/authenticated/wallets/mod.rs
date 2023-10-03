@@ -4,7 +4,7 @@ use serde::Deserialize;
 
 use crate::api::endpoint::Endpoint;
 
-#[derive(Debug, Clone, Copy, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum WalletType {
     Exchange,

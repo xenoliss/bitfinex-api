@@ -6,7 +6,7 @@ use serde_with::serde_as;
 
 use crate::api::endpoint::Endpoint;
 
-#[derive(Debug, Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum BalanceType {
     Exchange,
@@ -15,7 +15,7 @@ pub enum BalanceType {
     Funding,
 }
 
-#[derive(Debug, Clone, Copy, Serialize_repr)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize_repr)]
 #[repr(i8)]
 pub enum OrderDir {
     Short = -1,

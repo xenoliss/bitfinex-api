@@ -3,14 +3,14 @@ use serde_repr::Deserialize_repr;
 
 use crate::api::common::PlaceHolder;
 
-#[derive(Debug, Clone, Copy, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum RateType {
     Fixed,
     Var,
 }
 
-#[derive(Debug, Clone, Copy, Deserialize_repr)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize_repr)]
 #[repr(i8)]
 pub enum LoanSide {
     Borrower = -1,
@@ -18,7 +18,7 @@ pub enum LoanSide {
     Lender = 1,
 }
 
-#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum FundingOfferType {
     Limit,

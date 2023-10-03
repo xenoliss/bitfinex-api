@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::common::PlaceHolder;
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[repr(u32)]
 pub enum OrderFlag {
     Hidden = 64,
@@ -13,7 +13,7 @@ pub enum OrderFlag {
     NoVarRates = 524288,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderType {
     Limit,
