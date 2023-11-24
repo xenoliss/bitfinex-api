@@ -14,21 +14,34 @@ pub enum OrderFlag {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderType {
+    #[serde(rename = "LIMIT")]
     Limit,
+    #[serde(rename = "EXCHANGE LIMIT")]
     ExchangeLimit,
+    #[serde(rename = "MARKET")]
     Market,
+    #[serde(rename = "EXCHANGE MARKET")]
     ExchangeMarket,
+    #[serde(rename = "STOP")]
     Stop,
+    #[serde(rename = "EXCHANGE STOP")]
     ExchangeStop,
+    #[serde(rename = "STOP LIMIT")]
     StopLimit,
+    #[serde(rename = "EXCHANGE STOP LIMIT")]
     ExchangeStopLimit,
+    #[serde(rename = "TRAILING STOP")]
     TrailingStop,
+    #[serde(rename = "EXCHANGE TRAILING STOP")]
     ExchangeTrailingStop,
+    #[serde(rename = "FOK")]
     Fok,
+    #[serde(rename = "EXCHANGE FOK")]
     ExchangeFok,
+    #[serde(rename = "IOC")]
     Ioc,
+    #[serde(rename = "EXCHANGE IOC")]
     ExchangeIoc,
 }
 
@@ -43,7 +56,7 @@ pub struct Order {
     pub amount: f64,
     pub amount_orig: f64,
     pub order_type: OrderType,
-    pub type_prev: OrderType,
+    pub type_prev: Option<OrderType>,
     pub mts_tif: Option<u64>,
     pub flags: Option<u64>,
     pub status: String,
@@ -55,6 +68,7 @@ pub struct Order {
     pub hidden: bool,
     pub placed_id: Option<u64>,
     pub routing: String,
+    pub meta: Option<serde_json::Value>,
 }
 
 impl<'de> Deserialize<'de> for Order {
@@ -78,7 +92,7 @@ pub struct OrderRaw(
     f64,
     f64,
     OrderType,
-    OrderType,
+    Option<OrderType>,
     Option<u64>,
     PlaceHolder,
     Option<u64>,
@@ -98,6 +112,9 @@ pub struct OrderRaw(
     PlaceHolder,
     PlaceHolder,
     String,
+    PlaceHolder,
+    PlaceHolder,
+    Option<serde_json::Value>,
 );
 
 impl From<OrderRaw> for Order {
@@ -132,6 +149,9 @@ impl From<OrderRaw> for Order {
             _,
             _,
             routing,
+            _,
+            _,
+            meta,
         ) = value;
 
         Self {
@@ -156,6 +176,7 @@ impl From<OrderRaw> for Order {
             hidden: hidden == 1,
             placed_id,
             routing,
+            meta,
         }
     }
 }
