@@ -115,9 +115,9 @@ impl<'a> Endpoint for SubmitOrder<'a> {
 pub struct SubmitOrderResp {
     pub mts: u64,
     pub ty: String,
-    pub message_id: u64,
-    pub order: Order,
-    pub code: u64,
+    pub message_id: Option<u64>,
+    pub orders: Vec<Order>,
+    pub code: Option<u64>,
     pub status: String,
     pub text: String,
 }
@@ -128,17 +128,26 @@ impl<'de> Deserialize<'de> for SubmitOrderResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct SubmitOrderRawResp(u64, String, u64, PlaceHolder, OrderRaw, u64, String, String);
+        struct SubmitOrderRawResp(
+            u64,
+            String,
+            Option<u64>,
+            PlaceHolder,
+            Vec<OrderRaw>,
+            Option<u64>,
+            String,
+            String,
+        );
 
         impl From<SubmitOrderRawResp> for SubmitOrderResp {
             fn from(value: SubmitOrderRawResp) -> Self {
-                let SubmitOrderRawResp(mts, ty, message_id, _, order, code, status, text) = value;
+                let SubmitOrderRawResp(mts, ty, message_id, _, orders, code, status, text) = value;
 
                 Self {
                     mts,
                     ty,
                     message_id,
-                    order: order.into(),
+                    orders: orders.into_iter().map(|order| order.into()).collect(),
                     code,
                     status,
                     text,
