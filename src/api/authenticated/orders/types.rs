@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 
 use crate::api::common::PlaceHolder;
 
@@ -13,94 +13,36 @@ pub enum OrderFlag {
     NoVarRates = 524288,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum OrderType {
+    #[serde(rename = "LIMIT")]
     Limit,
+    #[serde(rename = "EXCHANGE LIMIT")]
     ExchangeLimit,
+    #[serde(rename = "MARKET")]
     Market,
+    #[serde(rename = "EXCHANGE MARKET")]
     ExchangeMarket,
+    #[serde(rename = "STOP")]
     Stop,
+    #[serde(rename = "EXCHANGE STOP")]
     ExchangeStop,
+    #[serde(rename = "STOP LIMIT")]
     StopLimit,
+    #[serde(rename = "EXCHANGE STOP LIMIT")]
     ExchangeStopLimit,
+    #[serde(rename = "TRAILING STOP")]
     TrailingStop,
+    #[serde(rename = "EXCHANGE TRAILING STOP")]
     ExchangeTrailingStop,
+    #[serde(rename = "FOK")]
     Fok,
+    #[serde(rename = "EXCHANGE FOK")]
     ExchangeFok,
+    #[serde(rename = "IOC")]
     Ioc,
+    #[serde(rename = "EXCHANGE IOC")]
     ExchangeIoc,
-}
-
-impl Serialize for OrderType {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: Serializer,
-    {
-        match *self {
-            OrderType::Limit => serializer.serialize_unit_variant("OrderType", 0, "LIMIT"),
-            OrderType::ExchangeLimit => {
-                serializer.serialize_unit_variant("OrderType", 1, "EXCHANGE LIMIT")
-            }
-            OrderType::Market => serializer.serialize_unit_variant("OrderType", 2, "MARKET"),
-            OrderType::ExchangeMarket => {
-                serializer.serialize_unit_variant("OrderType", 3, "EXCHANGE MARKET")
-            }
-            OrderType::Stop => serializer.serialize_unit_variant("OrderType", 4, "STOP"),
-            OrderType::ExchangeStop => {
-                serializer.serialize_unit_variant("OrderType", 5, "EXCHANGE STOP")
-            }
-            OrderType::StopLimit => serializer.serialize_unit_variant("OrderType", 6, "STOP LIMIT"),
-            OrderType::ExchangeStopLimit => {
-                serializer.serialize_unit_variant("OrderType", 7, "EXCHANGE STOP LIMIT")
-            }
-            OrderType::TrailingStop => {
-                serializer.serialize_unit_variant("OrderType", 8, "TRAILING STOP")
-            }
-            OrderType::ExchangeTrailingStop => {
-                serializer.serialize_unit_variant("OrderType", 9, "EXCHANGE TRAILING STOP")
-            }
-            OrderType::Fok => serializer.serialize_unit_variant("OrderType", 10, "FOK"),
-            OrderType::ExchangeFok => {
-                serializer.serialize_unit_variant("OrderType", 11, "EXCHANGE FOK")
-            }
-            OrderType::Ioc => serializer.serialize_unit_variant("OrderType", 12, "IOC"),
-            OrderType::ExchangeIoc => {
-                serializer.serialize_unit_variant("OrderType", 13, "EXCHANGE IOC")
-            }
-        }
-    }
-}
-
-impl<'de> Deserialize<'de> for OrderType {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?.to_uppercase();
-        let state = match s.as_str() {
-            "LIMIT" => OrderType::Limit,
-            "EXCHANGE LIMIT" => OrderType::ExchangeLimit,
-            "MARKET" => OrderType::Market,
-            "EXCHANGE MARKET" => OrderType::ExchangeMarket,
-            "STOP" => OrderType::Stop,
-            "EXCHANGE STOP" => OrderType::ExchangeStop,
-            "STOP LIMIT" => OrderType::StopLimit,
-            "EXCHANGE STOP LIMIT" => OrderType::ExchangeStopLimit,
-            "TRAILING STOP" => OrderType::TrailingStop,
-            "EXCHANGE TRAILING STOP" => OrderType::ExchangeTrailingStop,
-            "FOK" => OrderType::Fok,
-            "EXCHANGE FOK" => OrderType::ExchangeFok,
-            "IOC" => OrderType::Ioc,
-            "EXCHANGE IOC" => OrderType::ExchangeIoc,
-            other => {
-                return Err(serde::de::Error::custom(format!(
-                    "Invalid state '{}'",
-                    other
-                )));
-            }
-        };
-        Ok(state)
-    }
 }
 
 #[derive(Debug, Clone)]
