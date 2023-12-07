@@ -50,9 +50,9 @@ impl Endpoint for CancelOrder {
 pub struct CancelOrderResp {
     pub mts: u64,
     pub ty: String,
-    pub message_id: u64,
+    pub message_id: Option<u64>,
     pub order: Order,
-    pub code: u64,
+    pub code: Option<u64>,
     pub status: String,
     pub text: String,
 }
@@ -63,7 +63,16 @@ impl<'de> Deserialize<'de> for CancelOrderResp {
         D: serde::Deserializer<'de>,
     {
         #[derive(Debug, Deserialize)]
-        struct CancelOrderRawResp(u64, String, u64, PlaceHolder, OrderRaw, u64, String, String);
+        struct CancelOrderRawResp(
+            u64,
+            String,
+            Option<u64>,
+            PlaceHolder,
+            OrderRaw,
+            Option<u64>,
+            String,
+            String,
+        );
 
         impl From<CancelOrderRawResp> for CancelOrderResp {
             fn from(value: CancelOrderRawResp) -> Self {

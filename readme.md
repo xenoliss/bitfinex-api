@@ -322,7 +322,9 @@ Feel free to dig in the individual endpoints source code (in the [`api/public`](
 - :black_square_button: [Orders History](https://docs.bitfinex.com/reference/rest-auth-orders-history)
 - :black_square_button: [Orders History (by symbol)](https://docs.bitfinex.com/reference/rest-auth-orders-history-by-symbol)
 - :black_square_button: [Order Trades](https://docs.bitfinex.com/reference/rest-auth-order-trades)
-- :black_square_button: [Trades](https://docs.bitfinex.com/reference/rest-auth-trades)
+- :white_check_mark: [Trades](https://docs.bitfinex.com/reference/rest-auth-trades)
+    - Endpoint `Trades`
+    - Return `TradesResp`
 - :black_square_button: [Trades (by symbol)](https://docs.bitfinex.com/reference/rest-auth-trades-by-symbol)
 - :black_square_button: [OTC Orders History](https://docs.bitfinex.com/reference/otc-orders-history)
 - :black_square_button: [Ledgers](https://docs.bitfinex.com/reference/rest-auth-ledgers)

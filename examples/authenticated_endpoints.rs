@@ -20,6 +20,7 @@ use bitfinex_api::{
                 submit_order::{SubmitOrder, SubmitOrderResp},
                 types::{OrderFlag, OrderType},
             },
+            trades::{Trades, TradesResp},
             wallets::{Wallets, WalletsResp},
         },
         ignore::ignore,
@@ -132,5 +133,10 @@ async fn main() {
         .unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();
     // let r: CancelOrdersResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = Trades::builder().limit(5).build().unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: TradesResp = endpoint.query_async(&client).await.unwrap();
     // println!("{r:#?}");
 }
