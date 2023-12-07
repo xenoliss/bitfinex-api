@@ -1,10 +1,10 @@
 use derive_builder::Builder;
 use http::Method;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::api::common::Sort;
 use crate::api::endpoint::Endpoint;
-use crate::api::params::QueryParams;
 
 use super::orders::types::OrderType;
 
@@ -25,6 +25,33 @@ impl Trades {
     pub fn builder() -> TradesBuilder {
         TradesBuilder::default()
     }
+
+    fn json_body(&self) -> String {
+        #[serde_as]
+        #[derive(Debug, Serialize)]
+        pub struct JsonParams {
+            #[serde(skip_serializing_if = "Option::is_none")]
+            sort: Option<i8>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            start: Option<u64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            end: Option<u64>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
+            limit: Option<u64>,
+        }
+
+        let p = JsonParams {
+            sort: self.sort.map(|sort| sort as i8),
+            start: self.start,
+            end: self.end,
+            limit: self.limit,
+        };
+
+        serde_json::to_string(&p).unwrap()
+    }
 }
 
 impl Endpoint for Trades {
@@ -40,14 +67,8 @@ impl Endpoint for Trades {
         true
     }
 
-    fn parameters(&self) -> QueryParams {
-        let mut params = QueryParams::default();
-        params
-            .push_opt("start", self.start)
-            .push_opt("end", self.end)
-            .push_opt("limit", self.limit)
-            .push_opt("sort", self.sort.map(|sort| sort as i8));
-        params
+    fn body(&self) -> Option<(&'static str, Vec<u8>)> {
+        Some(("application/json", self.json_body().into_bytes()))
     }
 }
 
@@ -55,18 +76,19 @@ pub type TradesResp = Vec<TradeResp>;
 
 /// https://docs.bitfinex.com/reference/rest-auth-trades
 ///
-/// [0]  ID	        int     Trade database id
-/// [1]	SYMBOL	        string	Symbol (BTCUSD, …)
-/// [2]	MTS	        int	Execution timestamp
-/// [3]	ORDER_ID	int	Order id
-/// [4]	EXEC_AMOUNT	float	Positive means buy, negative means sell
-/// [5]	EXEC_PRICE	float	Execution price
-/// [6]	ORDER_TYPE	string	Order type
-/// [7]	ORDER_PRICE	float	Order price
-/// [8]	MAKER	        int	1 if true, -1 if false
-/// [9]	FEE	        float	Fee
-/// [10]FEE_CURRENCY	string	Fee currency
-/// [11]CID	        int	Client Order ID
+/// [0]  ID             int         Trade database id
+/// [1]  SYMBOL         string      Symbol (BTCUSD, …)
+/// [2]  MTS            int         Execution timestamp
+/// [3]  ORDER_ID       int         Order id
+/// [4]  EXEC_AMOUNT    float       Positive means buy, negative means sell
+/// [5]  EXEC_PRICE     float       Execution price
+/// [6]  ORDER_TYPE     string      Order type
+/// [7]  ORDER_PRICE    float       Order price
+/// [8]  MAKER          int         1 if true, -1 if false
+/// [9]  FEE            float       Fee
+/// [10] FEE_CURRENCY   string      Fee currency
+/// [11] CID            int         Client Order ID
+///
 #[derive(Debug)]
 pub struct TradeResp {
     pub id: u64,
