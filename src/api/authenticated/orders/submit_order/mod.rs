@@ -116,7 +116,7 @@ pub struct SubmitOrderResp {
     pub mts: u64,
     pub ty: String,
     pub message_id: Option<u64>,
-    pub orders: Vec<Order>,
+    pub order: Order,
     pub code: Option<u64>,
     pub status: String,
     pub text: String,
@@ -133,7 +133,7 @@ impl<'de> Deserialize<'de> for SubmitOrderResp {
             String,
             Option<u64>,
             PlaceHolder,
-            Vec<OrderRaw>,
+            [Order; 1],
             Option<u64>,
             String,
             String,
@@ -141,13 +141,13 @@ impl<'de> Deserialize<'de> for SubmitOrderResp {
 
         impl From<SubmitOrderRawResp> for SubmitOrderResp {
             fn from(value: SubmitOrderRawResp) -> Self {
-                let SubmitOrderRawResp(mts, ty, message_id, _, orders, code, status, text) = value;
+                let SubmitOrderRawResp(mts, ty, message_id, _, [order], code, status, text) = value;
 
                 Self {
                     mts,
                     ty,
                     message_id,
-                    orders: orders.into_iter().map(|order| order.into()).collect(),
+                    order,
                     code,
                     status,
                     text,
