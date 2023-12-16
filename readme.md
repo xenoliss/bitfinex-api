@@ -319,7 +319,9 @@ Feel free to dig in the individual endpoints source code (in the [`api/public`](
     - Endpoint `CancelOrders`
     - Return `CancelOrdersResp`
 - :black_square_button: [Order Multi-OP](https://docs.bitfinex.com/reference/rest-auth-order-multi)
-- :black_square_button: [Orders History](https://docs.bitfinex.com/reference/rest-auth-orders-history)
+- :white_check_mark: [Orders History](https://docs.bitfinex.com/reference/rest-auth-orders-history)
+    - Endpoint `OrdersHistory`
+    - Return `OrdersHistoryResp`
 - :black_square_button: [Orders History (by symbol)](https://docs.bitfinex.com/reference/rest-auth-orders-history-by-symbol)
 - :black_square_button: [Order Trades](https://docs.bitfinex.com/reference/rest-auth-order-trades)
 - :white_check_mark: [Trades](https://docs.bitfinex.com/reference/rest-auth-trades)
