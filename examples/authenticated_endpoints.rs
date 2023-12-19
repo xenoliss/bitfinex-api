@@ -142,7 +142,7 @@ async fn main() {
     // println!("{r:#?}");
 
     let endpoint = OrdersHistory::builder().limit(5).build().unwrap();
-    ignore(endpoint).query_async(&client).await;
-    // let res: Result<OrdersHistoryResp, ApiError<_>> = endpoint.query_async(&self.client).await;
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: OrdersHistoryResp = endpoint.query_async(&client).await.unwrap();
     // println!("{r:#?}");
 }

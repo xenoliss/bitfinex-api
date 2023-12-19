@@ -19,7 +19,7 @@ pub struct OrdersHistory {
     #[builder(default)]
     limit: Option<u64>,
     #[builder(default)]
-    id: Option<u64>,
+    id: Option<Vec<u64>>,
 }
 
 impl OrdersHistory {
@@ -30,25 +30,22 @@ impl OrdersHistory {
     fn json_body(&self) -> String {
         #[serde_as]
         #[derive(Debug, Serialize)]
-        pub struct JsonParams {
+        pub struct JsonParams<'a> {
             #[serde(skip_serializing_if = "Option::is_none")]
-            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
             start: Option<u64>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
             end: Option<u64>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            #[serde_as(as = "Option<serde_with::DisplayFromStr>")]
             limit: Option<u64>,
             #[serde(skip_serializing_if = "Option::is_none")]
-            id: Option<u64>,
+            id: Option<&'a [u64]>,
         }
 
         let p = JsonParams {
             start: self.start,
             end: self.end,
             limit: self.limit,
-            id: self.id,
+            id: self.id.as_ref().map(|ids| &ids[..]),
         };
 
         serde_json::to_string(&p).unwrap()
