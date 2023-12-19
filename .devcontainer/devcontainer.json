@@ -1,11 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/rust
 {
-    "name": "bitfinex-api",
+    "name": "bitfinex-api-pr",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
     "image": "mcr.microsoft.com/devcontainers/rust:1-1-bullseye",
     "runArgs": [
-        "--name=bitfinex-api"
+        "--name=bitfinex-api-pr"
     ],
     "customizations": {
         "vscode": {

@@ -15,6 +15,7 @@ use bitfinex_api::{
             orders::{
                 cancel_order::{CancelOrder, CancelOrderResp},
                 cancel_orders::{CancelOrders, CancelOrdersResp, CancelOrdersType},
+                orders_history::{OrdersHistory, OrdersHistoryResp},
                 retrieve_orders::{RetrieveOrders, RetrieveOrdersResp},
                 retrieve_orders_by_symbol::{RetrieveOrdersBySymbol, RetrieveOrdersBySymbolResp},
                 submit_order::{SubmitOrder, SubmitOrderResp},
@@ -138,5 +139,10 @@ async fn main() {
     let endpoint = Trades::builder().limit(5).build().unwrap();
     ignore(endpoint).query_async(&client).await.unwrap();
     // let r: TradesResp = endpoint.query_async(&client).await.unwrap();
+    // println!("{r:#?}");
+
+    let endpoint = OrdersHistory::builder().limit(5).build().unwrap();
+    ignore(endpoint).query_async(&client).await.unwrap();
+    // let r: OrdersHistoryResp = endpoint.query_async(&client).await.unwrap();
     // println!("{r:#?}");
 }
